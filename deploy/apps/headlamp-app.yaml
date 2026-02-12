@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: headlamp
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://kinvolk.github.io/headlamp'
+    chart: headlamp
+    targetRevision: 0.24.1
+    helm:
+      values: |
+        config:
+          # Enabling the metrics you wanted
+          metricsEnabled: true
+          # We'll skip the OTel collector for now unless you have one running
+        service:
+          type: LoadBalancer
+          port: 80
+        # This aligns with the ServiceAccount in your example
+        serviceAccount:
+          create: true
+          name: headlamp-admin
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: headlamp
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
