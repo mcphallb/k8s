@@ -2,11 +2,17 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
+  # 1. This is the "Base" that already has the argocd-server Service
   - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-  - service-lb.yaml  # This stays in resources because it's a file with its own GVK
 
 patches:
-  # Patch 1: The ConfigMap for the External URL
+  # 2. Use your file as a patch instead of a resource
+  - path: service-lb.yaml
+    target:
+      kind: Service
+      name: argocd-server
+
+  # 3. Your existing ConfigMap patch
   - target:
       kind: ConfigMap
       name: argocd-cm
