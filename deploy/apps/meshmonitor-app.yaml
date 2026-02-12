@@ -9,9 +9,10 @@ spec:
   project: default
   source:
     # This is the Helm repo URL from the documentation
-    repoURL: 'https://meshmonitor.github.io/meshmonitor-charts'
-    chart: meshmonitor
-    targetRevision: 3.4.12
+    repoURL: 'https://github.com/Yeraze/meshmonitor.git'
+    targetRevision: HEAD
+    # Path to the directory containing Chart.yaml
+    path: 'helm/meshmonitor'
     
     # This is where we define the Helm "Values"
     helm:
