@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: 'https://gitea.nibblesnbits.org/mcpha1bj/chockablock.git'
     targetRevision: HEAD
-    path: 'deploy/argocd'
+    path: 'deploy/apps/argocd'
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: argocd
