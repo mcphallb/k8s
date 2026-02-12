@@ -20,11 +20,9 @@ spec:
         - name: "meshmonitor.nodeIP"
           value: "192.168.0.79"
         - name: "service.type"
-          value: "ClusterIP"
+          value: "LoadBalancer"
       # Or use a values block for more complex config
       values: |
-        service:
-          type: LoadBalancer
         replicaCount: 1
         ingress:
           enabled: true
