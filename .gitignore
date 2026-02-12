@@ -1,0 +1,6 @@
+binnacle/inventory.yaml
+binnacle/matchbox-data/*
+binnacle/talosconfig/*
+binnacle/dnsmasq/*
+*/secrets.yaml
+*/kubeconfig

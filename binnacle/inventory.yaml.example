@@ -1,0 +1,11 @@
+cluster_name: myk8s
+endpoint: 192.168.30.185 # The VIP or first CP node
+nodes:
+  - name: cp-01
+    mac: "00:11:22:33:44:55"
+    ip: "192.168.30.185"
+    type: "controlplane"
+  - name: wk-01
+    mac: "aa:bb:cc:dd:ee:ff"
+    ip: "192.168.30.186"
+    type: "worker"
