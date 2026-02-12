@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/your-username/binnacle.git'
+    repoURL: 'https://gitea.nibblesnbits.org/mcpha1bj/binnacle.git'
     targetRevision: HEAD
     path: 'deploy/metallb'
   destination:
