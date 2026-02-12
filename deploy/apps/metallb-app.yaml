@@ -16,3 +16,7 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true  # Crucial for large manifests
+      - SkipDryRunOnMissingResource=true
