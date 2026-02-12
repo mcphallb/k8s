@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://kinvolk.github.io/headlamp'
+    repoURL: 'https://kubernetes-sigs.github.io/headlamp/'
     chart: headlamp
     targetRevision: 0.24.1
     helm:
