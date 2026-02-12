@@ -9,3 +9,6 @@ resources:
 
 patches:
   - path: service-lb.yaml
+    target:
+      kind: Service
+      name: argocd-server
