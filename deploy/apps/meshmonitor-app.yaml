@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: meshmonitor
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    # This is the Helm repo URL from the documentation
+    repoURL: 'https://meshmonitor.github.io/meshmonitor-charts'
+    chart: meshmonitor
+    targetRevision: 3.4.12
+    
+    # This is where we define the Helm "Values"
+    helm:
+      parameters:
+        - name: "meshmonitor.nodeIP"
+          value: "192.168.0.79"
+        - name: "service.type"
+          value: "ClusterIP"
+      # Or use a values block for more complex config
+      values: |
+        replicaCount: 1
+        ingress:
+          enabled: true
+  
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: meshmonitor # Argo will create this if we set the sync option below
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
