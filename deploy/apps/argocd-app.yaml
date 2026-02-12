@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: root-app
+  name: argocd-self-manager
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: 'https://gitea.nibblesnbits.org/mcpha1bj/chockablock.git'
     targetRevision: HEAD
-    path: 'deploy/apps' # This is where we will put our app manifests
+    path: 'deploy/argocd'
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: argocd
