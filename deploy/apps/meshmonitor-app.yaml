@@ -23,6 +23,8 @@ spec:
           value: "ClusterIP"
       # Or use a values block for more complex config
       values: |
+        service:
+          type: LoadBalancer
         replicaCount: 1
         ingress:
           enabled: true
