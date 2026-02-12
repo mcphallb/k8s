@@ -14,6 +14,5 @@ patches:
       name: argocd-server
     patch: |-
       - op: replace
-        path: /data
-        value:
-          url: https://argocd.nibblesnbits.org
+        path: /data/url
+        value: https://argocd.nibblesnbits.org
