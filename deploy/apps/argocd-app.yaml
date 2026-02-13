@@ -1,26 +1,29 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argocd-self-manager
+  name: argocd-server-config
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: 'https://gitea.nibblesnbits.org/mcpha1bj/chockablock.git'
-    targetRevision: HEAD
-    path: 'deploy/components/argocd'
+    # This points directly to the source of truth for the ArgoCD code
+    repoURL: https://argoproj.github.io/argo-helm
+    chart: argo-cd
+    targetRevision: 7.7.0 # Pin this to a specific version for stability
     helm:
-      server:
-        service:
-          type: LoadBalancer
-          annotations:
-            external-dns.alpha.kubernetes.io/hostname: argocd.chockablock.home
+      values: |
+        server:
+          service:
+            type: LoadBalancer
+            annotations:
+              # This triggers the ExternalDNS automation we just built
+              external-dns.alpha.kubernetes.io/hostname: argocd.chockablock.home
+          # Optional: Disables the 'non-secure' port if you want to force HTTPS
+          # insecure: false
   destination:
-    server: 'https://kubernetes.default.svc'
+    server: https://kubernetes.default.svc
     namespace: argocd
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - ServerSideApply=true
