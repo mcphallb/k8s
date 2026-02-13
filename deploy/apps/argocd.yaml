@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-manager
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://argoproj.github.io/argo-helm
+    chart: argo-cd
+    targetRevision: 7.7.0
+    helm:
+      releaseName: argocd  # Keeps service names as 'argocd-server'
+      values: |
+        server:
+          service:
+            type: LoadBalancer
+            annotations:
+              external-dns.alpha.kubernetes.io/hostname: argocd.chockablock.home
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
