@@ -11,15 +11,37 @@ spec:
     targetRevision: 1.15.0 # Use the latest stable
     helm:
       values: |
-        provider:
-          name: webhook
-          webhook:
-            image:
-              repository: ghcr.io/mirceanton/external-dns-provider-mikrotik
-              tag: v1.0.0
-            envFrom:
-              - secretRef:
-                  name: mikrotik-credentials
+        extraArgs:
+          - --provider=webhook
+          - --webhook-provider-url=http://localhost:8888
+        # We need to manually define the sidecar to ensure env vars are passed
+        extraContainers:
+          - name: webhook
+            image: ghcr.io/mirceanton/external-dns-provider-mikrotik:v1.0.0
+            ports:
+              - containerPort: 8888
+                name: webhook
+            env:
+              - name: MIKROTIK_BASEURL
+                valueFrom:
+                  secretKeyRef:
+                    name: mikrotik-credentials
+                    key: MIKROTIK_BASEURL
+              - name: MIKROTIK_USERNAME
+                valueFrom:
+                  secretKeyRef:
+                    name: mikrotik-credentials
+                    key: MIKROTIK_USERNAME
+              - name: MIKROTIK_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: mikrotik-credentials
+                    key: MIKROTIK_PASSWORD
+              - name: MIKROTIK_SKIP_TLS_VERIFY
+                valueFrom:
+                  secretKeyRef:
+                    name: mikrotik-credentials
+                    key: MIKROTIK_SKIP_TLS_VERIFY
         # This prevents ExternalDNS from deleting records it didn't create
         policy: upsert-only 
         # Only manage records ending in your local domain
