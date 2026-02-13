@@ -11,8 +11,10 @@ spec:
     targetRevision: 1.15.0 # Use the latest stable
     helm:
       values: |
+        provider:
+          name: webhook
+
         extraArgs:
-          - --provider=webhook
           - --webhook-provider-url=http://localhost:8888
         # We need to manually define the sidecar to ensure env vars are passed
         extraContainers:
