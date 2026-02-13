@@ -8,21 +8,18 @@ spec:
   source:
     repoURL: https://kubernetes-sigs.github.io/external-dns/
     chart: external-dns
-    targetRevision: 1.15.0 # Use the latest stable
+    targetRevision: 1.15.0
     helm:
       values: |
+        # Use the webhook provider logic
         provider:
           name: webhook
-
-        extraArgs:
-          - --webhook-provider-url=http://localhost:8888
-        # We need to manually define the sidecar to ensure env vars are passed
-        extraContainers:
-          - name: webhook
-            image: ghcr.io/mirceanton/external-dns-provider-mikrotik:v1.0.0
-            ports:
-              - containerPort: 8888
-                name: webhook
+          webhook:
+            # We must define the image here to satisfy the Helm template check
+            image:
+              repository: ghcr.io/mirceanton/external-dns-provider-mikrotik
+              tag: v1.0.0
+            # Explicitly map the MikroTik credentials to the sidecar
             env:
               - name: MIKROTIK_BASEURL
                 valueFrom:
@@ -44,13 +41,23 @@ spec:
                   secretKeyRef:
                     name: mikrotik-credentials
                     key: MIKROTIK_SKIP_TLS_VERIFY
-        # This prevents ExternalDNS from deleting records it didn't create
-        policy: upsert-only 
-        # Only manage records ending in your local domain
+        
+        # ExternalDNS main container settings
+        extraArgs:
+          - --webhook-provider-url=http://localhost:8888
+        
+        # Policy: upsert-only prevents it from deleting records it didn't create
+        policy: upsert-only
+        
+        # Safety: only touch your local domain
         domainFilters:
-          - chockablock.home 
-        # Crucial: This marks the records so ExternalDNS knows which ones it "owns"
-        txtOwnerId: chockablock-cluster 
+          - chockablock.home
+          
+        # Ownership: helps ExternalDNS track its own records on the MikroTik
+        txtOwnerId: chockablock-cluster
+        
+        # Recommended: interval for checking changes
+        interval: 1m
   destination:
     server: https://kubernetes.default.svc
     namespace: external-dns
