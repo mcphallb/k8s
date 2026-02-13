@@ -21,6 +21,10 @@ spec:
               tag: v1.0.0
             # Explicitly map the MikroTik credentials to the sidecar
             env:
+              - name: MIKROTIK_DEFAULT_TTL
+                value: "10m"
+              - name: MIKROTIK_DEFAULT_Comment
+                value: "k8s"
               - name: MIKROTIK_BASEURL
                 valueFrom:
                   secretKeyRef:
