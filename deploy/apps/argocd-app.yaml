@@ -9,6 +9,12 @@ spec:
     repoURL: 'https://gitea.nibblesnbits.org/mcpha1bj/chockablock.git'
     targetRevision: HEAD
     path: 'deploy/components/argocd'
+    helm:
+      server:
+        service:
+          type: LoadBalancer
+          annotations:
+            external-dns.alpha.kubernetes.io/hostname: argocd.chockablock.home
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: argocd

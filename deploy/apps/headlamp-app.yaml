@@ -18,6 +18,8 @@ spec:
         service:
           type: LoadBalancer
           port: 80
+          annotations:
+            external-dns.alpha.kubernetes.io/hostname: headlamp.chockablock.home
         # This aligns with the ServiceAccount in your example
         serviceAccount:
           create: true
