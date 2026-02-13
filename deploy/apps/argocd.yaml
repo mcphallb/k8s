@@ -29,6 +29,14 @@ spec:
               # If using MetalLB, you can also force the IP here if you wish:
               # metallb.universe.tf/loadBalancerIPs: 192.168.30.200
 
+        repoServer:
+          service:
+            targetPort: 8081
+
+        dex:
+          service:
+            targetPort: 5556
+
         # Optional: Ensures metrics services also have proper selectors
         prometheus:
           enabled: true
