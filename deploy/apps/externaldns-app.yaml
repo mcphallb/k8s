@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: external-dns-mikrotik
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://kubernetes-sigs.github.io/external-dns/
+    chart: external-dns
+    targetRevision: 1.15.0 # Use the latest stable
+    helm:
+      values: |
+        provider:
+          name: webhook
+          webhook:
+            image:
+              repository: ghcr.io/mirceanton/external-dns-provider-mikrotik
+              tag: v1.0.0
+            envFrom:
+              - secretRef:
+                  name: mikrotik-credentials
+        # This prevents ExternalDNS from deleting records it didn't create
+        policy: upsert-only 
+        # Only manage records ending in your local domain
+        domainFilters:
+          - chockablock.home 
+        # Crucial: This marks the records so ExternalDNS knows which ones it "owns"
+        txtOwnerId: chockablock-cluster 
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: external-dns
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
