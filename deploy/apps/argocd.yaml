@@ -13,33 +13,32 @@ spec:
       releaseName: argocd
       values: |
         global:
-          # Ensures the 'instance: argocd' label is applied to all resources
           instanceSelectorKey: argoproj.io/instance
           
         configs:
           params:
-            # Replaces your manual 'server.insecure' ConfigMap patch
             server.insecure: true
 
         server:
           service:
             type: LoadBalancer
+            targetPort: 8080
             annotations:
               external-dns.alpha.kubernetes.io/hostname: argocd.chockablock.home
-              # If using MetalLB, you can also force the IP here if you wish:
-              # metallb.universe.tf/loadBalancerIPs: 192.168.30.200
 
+        # FORCE PORT NUMBERS HERE:
         repoServer:
           service:
             targetPort: 8081
-
+        
         dex:
           service:
             targetPort: 5556
-
-        # Optional: Ensures metrics services also have proper selectors
-        prometheus:
-          enabled: true
+            
+        notifications:
+          metrics:
+            service:
+              targetPort: 9001
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
@@ -49,5 +48,4 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      # This helps avoid the 'immutable field' error during the transition
       - Replace=true
