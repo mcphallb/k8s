@@ -3,34 +3,25 @@ kind: Application
 metadata:
   name: meshmonitor
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    # This is the Helm repo URL from the documentation
     repoURL: 'https://github.com/Yeraze/meshmonitor.git'
     targetRevision: HEAD
-    # Path to the directory containing Chart.yaml
     path: 'helm/meshmonitor'
-    
-    # This is where we define the Helm "Values"
     helm:
-      parameters:
-        - name: "meshmonitor.nodeIP"
-          value: "192.168.0.79"
-        - name: "service.type"
-          value: "LoadBalancer"
-      # Or use a values block for more complex config
       values: |
         replicaCount: 1
         ingress:
           enabled: true
-  
+        # --- Add Persistence section below ---
+        persistence:
+          enabled: true
+          existingClaim: meshmonitor-nfs-pvc
+          mountPath: /data # Change this to the app's required data path
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: meshmonitor # Argo will create this if we set the sync option below
-
+    namespace: meshmonitor
   syncPolicy:
     automated:
       prune: true
