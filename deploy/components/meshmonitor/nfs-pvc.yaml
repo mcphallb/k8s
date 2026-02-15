@@ -8,8 +8,8 @@ spec:
   accessModes:
     - ReadWriteMany
   nfs:
-    server: 192.168.0.79 # Update to your NFS Server IP
-    path: /mnt/nfs/meshmonitor
+    server: 192.168.30.155 # Update to your NFS Server IP
+    path: /mnt/storage
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
