@@ -12,34 +12,16 @@ spec:
     helm:
       releaseName: argocd
       values: |
-        global:
-          instanceSelectorKey: argoproj.io/instance
-          
         server:
-          extraArgs:
-            - --insecure
           service:
             type: LoadBalancer
+            # This ensures the service routes to the right internal port
             targetPort: 8080
-            annotations:
-              external-dns.alpha.kubernetes.io/hostname: argocd.chockablock.home
 
-        configs:
-          params:
-            server.insecure: true
 
         repoServer:
           service:
             targetPort: 8081
-
-        dex:
-          service:
-            targetPort: 5556
-            
-        notifications:
-          metrics:
-            service:
-              targetPort: 9001
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
@@ -47,6 +29,3 @@ spec:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - Replace=true
