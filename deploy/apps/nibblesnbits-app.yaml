@@ -7,7 +7,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://gittea.nibblesnbits.org/mcpha1bj/chockablock.git
+    repoURL: https://gitea.nibblesnbits.org/mcpha1bj/chockablock.git
     targetRevision: HEAD
     path: deploy/components/nibblesnbits-website # Folder where your website YAMLs live
   destination:
