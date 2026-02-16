@@ -1,6 +1,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
+  name: meshmonitor-storage
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://gitea.nibblesnbits.org/mcpha1bj/chockablock.git'
+    path: 'deploy/components/meshmonitor' # Path to your PV/PVC
+    targetRevision: HEAD
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: meshmonitor
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
   name: meshmonitor
   namespace: argocd
 spec:

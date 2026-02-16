@@ -9,7 +9,7 @@ spec:
     - ReadWriteMany
   nfs:
     server: 192.168.30.155 # Update to your NFS Server IP
-    path: /mnt/storage
+    path: /mnt/storage/meshmonitor
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -22,3 +22,4 @@ spec:
   resources:
     requests:
       storage: 5Gi
+  volumeName: meshmonitor-nfs-pv
