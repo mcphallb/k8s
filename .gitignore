@@ -4,3 +4,4 @@ binnacle/talosconfig/*
 binnacle/dnsmasq/*
 */secrets.yaml
 */kubeconfig
+*/talsecret.yaml

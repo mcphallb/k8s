@@ -1,8 +1,10 @@
 # --- Dynamic Variables (Extract from Inventory) ---
 # Pulls the first controlplane IP for talosctl context setting
 # Revised for Python yq (jq-based)
-NODE_IP := $(shell yq -r '.nodes[] | select(.type == "controlplane") | .ip' inventory.yaml | head -n 1)
-CLUSTER_NAME := $(shell yq -r '.cluster_name' inventory.yaml)
+#NODE_IP := $(shell yq -r '.nodes[] | select(.type == "controlplane") | .ip' inventory.yaml | head -n 1)
+#CLUSTER_NAME := $(shell yq -r '.cluster_name' inventory.yaml)
+NODE_IP := $(shell yq -r '.nodes[] | select(.controlPlane == true) | .ipAddress' talconfig.yaml | head -n 1)
+CLUSTER_NAME := $(shell yq -r '.clusterName' talconfig.yaml)
 TALOS_VERSION := $(strip v1.6.1) # Change this as needed
 ASSETS_DIR := matchbox-data/assets
 MATCHBOX_PORT := 8081
@@ -15,13 +17,10 @@ init: prereqs download-assets update verify-all
 
 # Standard update: run this when you edit inventory.yaml
 update: 
-	@echo "⚙️ Regenerating configs from inventory..."
+	@echo "⚙️ Regenerating via Talhelper..."
 	python3 bin/generate.py
-	@mkdir -p ~/.talos
+	# Note: talhelper names files as cluster-hostname.yaml
 	@cp talosconfig/talosconfig ~/.talos/config
-	@talosctl --talosconfig talosconfig/talosconfig config context $(CLUSTER_NAME)
-	@talosctl --talosconfig talosconfig/talosconfig config endpoint $(NODE_IP)
-	@talosctl --talosconfig talosconfig/talosconfig config node $(NODE_IP)
 	@echo "♻️ Restarting Network Stack..."
 	docker compose restart dnsmasq matchbox
 
@@ -33,6 +32,8 @@ prereqs:
 	@which python3 > /dev/null || (echo "❌ python3 missing"; exit 1)
 	@which talosctl > /dev/null || (echo "--- Installing talosctl ---" && curl -sL https://talos.dev/install | sh)
 	@mkdir -p $(ASSETS_DIR) dnsmasq matchbox-data/groups matchbox-data/profiles talosconfig
+	@which talhelper > /dev/null || (echo "❌ talhelper missing. Install via 'curl https://i.jpillora.com/budimanjojo/talhelper! | sudo bash
+'"; exit 1)
 
 download-assets:
 	@echo "--- Checking for Talos $(TALOS_VERSION) PXE Assets ---"
