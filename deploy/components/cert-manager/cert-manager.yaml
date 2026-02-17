@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-manager
+  namespace: argocd
+  annotations:
+    # Use sync-waves to ensure infra like cert-manager installs before your apps
+    argocd.argoproj.io/sync-wave: "-5"
+spec:
+  project: default
+  source:
+    chart: cert-manager
+    repoURL: https://charts.jetstack.io
+    targetRevision: v1.14.0 # Use the latest stable version
+    helm:
+      values: |
+        installCRDs: true  # Vital: cert-manager needs its CRDs to function
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cert-manager # Recommended to keep in its own namespace
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
