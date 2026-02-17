@@ -19,6 +19,7 @@ init: prereqs download-assets update verify-all
 update: 
 	@echo "⚙️ Regenerating via Talhelper..."
 	python3 bin/generate.py
+	@mkdir -p ~/.talos
 	# Note: talhelper names files as cluster-hostname.yaml
 	@cp talosconfig/talosconfig ~/.talos/config
 	@echo "♻️ Restarting Network Stack..."
