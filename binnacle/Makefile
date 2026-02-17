@@ -33,8 +33,7 @@ prereqs:
 	@which python3 > /dev/null || (echo "❌ python3 missing"; exit 1)
 	@which talosctl > /dev/null || (echo "--- Installing talosctl ---" && curl -sL https://talos.dev/install | sh)
 	@mkdir -p $(ASSETS_DIR) dnsmasq matchbox-data/groups matchbox-data/profiles talosconfig
-	@which talhelper > /dev/null || (echo "❌ talhelper missing. Install via 'curl https://i.jpillora.com/budimanjojo/talhelper! | sudo bash
-'"; exit 1)
+	@which talhelper > /dev/null || (echo "❌ talhelper missing. Install via 'curl https://i.jpillora.com/budimanjojo/talhelper! | sudo bash'"; exit 1)
 
 download-assets:
 	@echo "--- Checking for Talos $(TALOS_VERSION) PXE Assets ---"
