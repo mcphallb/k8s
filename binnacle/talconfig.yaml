@@ -1,57 +1,25 @@
-clusterName: myk8s
-talosVersion: v1.6.1
-# The endpoint is your VIP or first CP node from inventory.yaml
+clusterName: metal-cluster
+talosVersion: v1.12.2
+kubernetesVersion: 1.32.0
 endpoint: https://192.168.30.10:6443
-
-# Talhelper will look for this file to manage cluster secrets
-secrets: talsecret.yaml
+talsecret: talsecret.yaml
 
 nodes:
-  - hostname: cp-01
+  - hostname: control-01
     ipAddress: 192.168.30.10
-    mac: "d8:cb:8a:60:7e:09"
-    installDisk: /dev/sda
     controlPlane: true
+    installDisk: /dev/sda
     inlinePatch:
-      cluster:
-        extraManifests:
-          - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-          - |
-            apiVersion: argoproj.io/v1alpha1
-            kind: Application
-            metadata:
-              name: root-bootstrap
-              namespace: argocd
-            spec:
-              project: default
-              source:
-                repoURL: https://github.com/your-org/your-gitops-repo.git
-                targetRevision: HEAD
-                path: apps
-              destination:
-                server: https://kubernetes.default.svc
-                namespace: argocd
-              syncPolicy:
-                automated:
-                  prune: true
-                  selfHeal: true
-
-  - hostname: wk-01
-    ipAddress: 192.168.30.20
-    mac: "d8:cb:8a:60:5d:45"
-    installDisk: /dev/sda
-    controlPlane: false
-
-  - hostname: wk-02
-    ipAddress: 192.168.30.21
-    mac: "d8:cb:8a:60:5b:cb"
-    installDisk: /dev/sda
-    controlPlane: false
-
-# This tells Talhelper where to put the generated files
-controlPlane:
-  configPatches:
-    - |-
       machine:
         install:
-          wipe: true
+          disk: /dev/sda
+          image: ghcr.io/siderolabs/installer:v1.12.2
+          bootloader: true
+  - hostname: wk-01
+    ipAddress: 192.168.30.20
+    controlPlane: false
+    installDisk: /dev/sda
+  - hostname: wk-02
+    ipAddress: 192.168.30.21
+    controlPlane: false
+    installDisk: gdev/sda  

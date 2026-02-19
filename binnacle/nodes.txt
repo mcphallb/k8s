@@ -1,0 +1,4 @@
+# hostname   mac                ip             type
+control-01   d8:cb:8a:60:7e:09  192.168.30.10  cp
+wk-01        d8:cb:8a:60:5d:45  192.168.30.20  worker
+wk-02        d8:cb:8a:60:5b:cb  192.168.30.21  worker

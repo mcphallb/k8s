@@ -1,7 +1,34 @@
-binnacle/inventory.yaml
-binnacle/matchbox-data/*
+binnacle/matchbox/*
+binnacle/tftpboot
+binnacle/dnsmasq/static-leases.conf
 binnacle/talosconfig/*
-binnacle/dnsmasq/*
-*/secrets.yaml
-*/kubeconfig
-*/talsecret.yaml
+secrets.yaml
+kubeconfig
+talsecret.yaml
+
+# --- Build Artifacts ---
+# Ignore binaries downloaded or moved by the Makefile
+bin/
+dist/
+*.iso
+*.raw
+
+# --- Generated Talos Configs ---
+# Makefile often generates these from templates
+# Ignore the actual machine configs (controlplane.yaml, worker.yaml)
+# but keep the templates (talconfig.yaml)
+binnacle/clusterconfig/*
+
+# --- Matchbox & Boot Artifacts ---
+# If your Makefile fetches the Talos kernel/initramfs
+/var/lib/matchbox/assets/vmlinuz-*
+/var/lib/matchbox/assets/initramfs-*
+/var/lib/matchbox/ignition/*.json
+
+# --- Temporary/Lock Files ---
+# Makefile logs or state tracking
+.make-state
+*.tmp
+*.log
+
+
