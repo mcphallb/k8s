@@ -1,16 +1,11 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-# 1. Ensure the namespace exists first
-resources:
-  - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-  - root.yaml # This is your file saved locally
-
-# 2. Force everything into the argocd namespace
+# This ensures all resources (including the remote ones) 
+# are forced into the 'argocd' namespace
 namespace: argocd
 
-# 3. Optional: Create the namespace automatically if using newer kubectl
-inventory:
-  - apiVersion: v1
-    kind: Namespace
-    name: argocd
+resources:
+  - namespace.yaml
+  - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+  - root.yaml

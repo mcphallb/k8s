@@ -13,14 +13,17 @@ spec:
       releaseName: argocd
       values: |
         server:
+          # This ensures the pod itself starts in HTTP mode to match probes
+          extraArgs:
+            - --insecure
           service:
             type: LoadBalancer
-            # This ensures the service routes to the right internal port
-            targetPort: 8080
-
-
+            # Modern MetalLB annotation for static IP
+            annotations: 
+              metallb.universe.tf/loadBalancerIPs: 192.168.30.202
         repoServer:
           service:
+            # Keep your custom port if needed
             targetPort: 8081
   destination:
     server: https://kubernetes.default.svc
