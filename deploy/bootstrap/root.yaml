@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: root-bootstrap
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io # Deletes children if root is deleted
 spec:
   project: default
   source:
@@ -16,3 +18,7 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true # Vital for hands-off automation
+      - RespectIgnoreDifferences=true
+      - ApplyOutOfSyncOnly=true # Highly recommended for large app-of-apps
