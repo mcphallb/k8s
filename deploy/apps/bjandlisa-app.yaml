@@ -1,0 +1,21 @@
+# nibblesnbits-app-controller.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nibblesnbits-website
+  namespace: argocd # This lives in the argocd namespace
+spec:
+  project: default
+  source:
+    repoURL: https://gitea.nibblesnbits.org/mcpha1bj/chockablock.git
+    targetRevision: HEAD
+    path: deploy/components/bjandlisa-website # Folder where your website YAMLs live
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: bjandlisa # <--- This forces the namespace
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true # Tells ArgoCD to create 'nibblesnbits' if it's missing
