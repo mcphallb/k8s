@@ -30,7 +30,7 @@ spec:
         - name: bjandlisa-website
           image: mcpha1bj/bjandlisa:latest
           ports:
-            - containerPort: 8080 # Change this to 8080 for non-root
+            - containerPort: 80 # Change this to 8080 for non-root
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -64,4 +64,4 @@ spec:
   ports:
     - protocol: TCP
       port: 80         # Port for the outside world
-      targetPort: 8080 # Must match the containerPort above
+      targetPort: 80   # Must match the containerPort above
