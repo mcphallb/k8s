@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: nibblesnbits-website
+  name: bjandlisa-website
   namespace: argocd # This lives in the argocd namespace
 spec:
   project: default
