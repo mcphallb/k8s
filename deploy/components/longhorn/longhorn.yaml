@@ -3,8 +3,6 @@ kind: Application
 metadata:
   name: longhorn
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
@@ -14,18 +12,16 @@ spec:
     helm:
       values: |
         defaultSettings:
-          # Match the path created in your Talos extraMounts
           defaultDataPath: /var/lib/longhorn
-          # Disable check for host package managers (apt/yum)
           packageManager: false
         csi:
-          # Talos kubelet directory
           kubeletRootDir: /var/lib/kubelet
-          # Allows volume formatting within the container
           mkfsPropagateHostMount: true
-        # Helps avoid issues with ArgoCD sync hooks on immutable nodes
-        preUpgradeChecker:
-          jobEnabled: false
+        service:
+          ui:
+            type: LoadBalancer
+            # Optional: If you want a specific IP from your MetalLB pool
+            # loadBalancerIP: 192.168.30.50 
   destination:
     server: https://kubernetes.default.svc
     namespace: longhorn-system
