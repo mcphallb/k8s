@@ -6,8 +6,8 @@ metadata:
 spec:
   mount: kubernetes
   type: kv-v2
-  path: secret/data/dockerhub # The path where you stored the creds
-  destination:
+  path: dockerhub # The path where you stored the creds
+g destination:
     name: dockerhub-creds
     create: true
     type: kubernetes.io/dockerconfigjson # Critical for imagePullSecrets
