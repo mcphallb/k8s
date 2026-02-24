@@ -7,7 +7,8 @@ spec:
   mount: kubernetes
   type: kv-v2
   path: secret/data/dockerhub # The path where you stored the creds
-  dest:
+  destination:
     name: dockerhub-creds
+    create: true
     type: kubernetes.io/dockerconfigjson # Critical for imagePullSecrets
   refreshAfter: 1h
