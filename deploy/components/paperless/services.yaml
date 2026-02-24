@@ -1,0 +1,27 @@
+# Internal service for the Web UI
+apiVersion: v1
+kind: Service
+metadata:
+  name: paperless
+spec:
+  selector:
+    app: paperless
+  ports:
+    - port: 8000
+---
+# External service for the Printer
+apiVersion: v1
+kind: Service
+metadata:
+  name: paperless-ftp
+spec:
+  type: LoadBalancer
+  selector:
+    app: paperless
+  ports:
+    - name: ftp
+      port: 21
+      targetPort: 21
+    - name: passive
+      port: 30000
+      targetPort: 30000
