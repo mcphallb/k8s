@@ -3,7 +3,12 @@ apiVersion: v1
 kind: Service
 metadata:
   name: paperless
+  namespace: paperless-ngx
 spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 8000
   selector:
     app: paperless
   ports:
@@ -14,6 +19,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: paperless-ftp
+  namespace: paperless-ngx
 spec:
   type: LoadBalancer
   selector:
