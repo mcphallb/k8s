@@ -23,7 +23,10 @@ spec:
             - name: POSTGRES_USER
               value: paperless
             - name: POSTGRES_PASSWORD
-              value: "secure-db-pass" # Use a Secret in production
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-secrets # The name of the K8s secret created by the Operator
+                  key: db_password           # The key name inside your Vault secre
           volumeMounts:
             - name: pgdata
               mountPath: /var/lib/postgresql/data
