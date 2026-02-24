@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     # Replace with your actual GitOps repo
-    repoURL: 'https://gitea.nibblesnbits.org/mcpha1bj/chockablock.git
+    repoURL: 'https://gitea.nibblesnbits.org/mcpha1bj/chockablock.git'
     targetRevision: HEAD
     # This points to the folder containing the YAMLs from our previous step
     path: deploy/components/paperless 
