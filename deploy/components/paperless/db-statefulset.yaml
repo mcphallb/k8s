@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: postgres
-  namespace: paperless
+  namespace: paperless-ngx
 spec:
   serviceName: postgres
   replicas: 1
