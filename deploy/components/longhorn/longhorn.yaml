@@ -17,6 +17,8 @@ spec:
           executable-path: /usr/local/lib/talos/extensions/iscsi-tools/bin/iscsiadm
           defaultDataPath: /var/lib/longhorn
           packageManager: false
+          defaultDataLocality: "best-effort"
+          defaultReplicaCount: 2
         csi:
           kubeletRootDir: /var/lib/kubelet
           mkfsPropagateHostMount: true
