@@ -20,7 +20,7 @@ spec:
         app: bjandlisa-website
     spec:
       imagePullSecrets:
-        - name: my-registry-secret
+        - name: dockerhub-creds
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
