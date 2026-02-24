@@ -2,9 +2,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: paperless
+  namespace: paperless
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: paperless # This MUST match the template label below
   template:
+    metadata:
+      labels:
+        app: paperless # The "badge" for the Pod
     spec:
       securityContext:
         fsGroup: 1000 # Critical for Longhorn permissions
