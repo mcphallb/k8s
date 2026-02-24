@@ -9,10 +9,10 @@ spec:
   project: default
   source:
     # Replace with your actual GitOps repo
-    repoURL: 'https://github.com/your-user/home-ops.git'
+    repoURL: 'https://gitea.nibblesnbits.org/mcpha1bj/chockablock.git
     targetRevision: HEAD
     # This points to the folder containing the YAMLs from our previous step
-    path: apps/paperless 
+    path: deploy/components/paperless 
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: paperless-ngx
