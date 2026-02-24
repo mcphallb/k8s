@@ -4,6 +4,7 @@ metadata:
   name: dockerhub-pull-secret
   namespace: bjandlisa
 spec:
+  vaultConnectionRef: default
   vaultAuthRef: default
   mount: secret        # Changed to match your 'secret/' engine
   type: kv-v2          # Matches your KV version 2 engine
