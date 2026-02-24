@@ -47,7 +47,7 @@ spec:
 
         # --- COMPONENT 2: The FTP Hack Sidecar ---
         - name: ftp-server
-          image: stilliard/pure-ftpd:alpine
+          image: stilliard/pure-ftpd:latest
           env:
             - name: FTP_USER_NAME
               value: "printer"
