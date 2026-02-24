@@ -2,13 +2,13 @@ apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultStaticSecret
 metadata:
   name: dockerhub-pull-secret
-  namespace: bjandlisa # Must match the namespace in your ArgoCD App
+  namespace: bjandlisa
 spec:
-  mount: kubernetes
-  type: kv-v2
-  path: dockerhub # The path where you stored the creds
+  mount: secret        # Changed to match your 'secret/' engine
+  type: kv-v2          # Matches your KV version 2 engine
+  path: dockerhub      # Matches your secret path
   destination:
     name: dockerhub-creds
-    create: true
-    type: kubernetes.io/dockerconfigjson # Critical for imagePullSecrets
+    create: true      
+    type: kubernetes.io/dockerconfigjson
   refreshAfter: 1h
