@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres # This name MUST match your PAPERLESS_DBHOST
+  namespace: paperless-ngx
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    app: postgres # This MUST match the labels in your db-statefulset.yaml
