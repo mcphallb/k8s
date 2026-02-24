@@ -14,6 +14,7 @@ spec:
         preUpgradeChecker:
           jobEnabled: false
         defaultSettings:
+          executable-path: /usr/local/lib/talos/extensions/iscsi-tools/bin/iscsiadm
           defaultDataPath: /var/lib/longhorn
           packageManager: false
         csi:
