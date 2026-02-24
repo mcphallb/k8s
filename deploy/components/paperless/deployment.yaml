@@ -36,7 +36,6 @@ spec:
               value: postgres
             - name: PAPERLESS_OCR_LANGUAGE
               value: eng
-            # Add other envs as needed
           volumeMounts:
             - name: data
               mountPath: /usr/src/paperless/data
