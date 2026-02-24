@@ -19,7 +19,7 @@ spec:
           packageManager: false
           defaultDataLocality: "best-effort"
           defaultReplicaCount: 2
-          backupTarget: "s3://s3.us-east-005.backblazeb2.com/Longhorn-Chockablock"
+          backupTarget: "s3://Longhorn-Chockablock@us-east-005/"
         csi:
           kubeletRootDir: /var/lib/kubelet
           mkfsPropagateHostMount: true
