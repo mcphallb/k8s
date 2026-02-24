@@ -11,7 +11,7 @@ spec:
         image: hashicorp/vault:1.15
         env:
         - name: VAULT_ADDR
-          value: http://vault-internal.vault.svc.cluster.local:8200
+          value: http://vault-server.vault.svc.cluster.local:8200
         - name: VAULT_TOKEN
           valueFrom:
             secretKeyRef:
