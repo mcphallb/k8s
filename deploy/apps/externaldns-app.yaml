@@ -66,5 +66,6 @@ spec:
   type: kv-v2
   path: external-dns # The path where your secrets live in Vault
   refreshAfter: 60s
-  destSecret:
+  destination:
     name: mikrotik-credentials # This matches the name in your original App manifest
+    create: true
