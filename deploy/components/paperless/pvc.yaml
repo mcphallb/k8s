@@ -4,7 +4,8 @@ metadata:
   name: paperless-media
   namespace: paperless-ngx
   labels:
-    backup-group: nightly-b2
+    recurring-job.longhorn.io/source: "enabled"
+    recurring-job.longhorn.io/s3-nightly: "enabled"
 spec:
   accessModes: ["ReadWriteOnce"]
   storageClassName: "longhorn"
@@ -17,7 +18,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: paperless-data
   labels:
-    backup-group: nightly-b2
+    recurring-job.longhorn.io/source: "enabled"
+    recurring-job.longhorn.io/s3-nightly: "enabled"
 spec:
   accessModes: ["ReadWriteOnce"]
   storageClassName: "longhorn"
@@ -30,7 +32,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: paperless-consume
   labels:
-    backup-group: nightly-b2
+    recurring-job.longhorn.io/source: "enabled"
+    recurring-job.longhorn.io/s3-nightly: "enabled"
 spec:
   accessModes: ["ReadWriteOnce"]
   storageClassName: "longhorn"
