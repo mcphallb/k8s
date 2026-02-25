@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: external-dns-mikrotik
   namespace: argocd
+  annotations:
+    avp.kubernetes.io/path: "secret/data/external-dns/mikrotik"
 spec:
   project: default
   source:
@@ -11,56 +13,27 @@ spec:
     targetRevision: 1.15.0
     helm:
       values: |
-        # Use the webhook provider logic
         provider:
           name: webhook
           webhook:
-            # We must define the image here to satisfy the Helm template check
             image:
               repository: ghcr.io/mirceanton/external-dns-provider-mikrotik
               tag: v1.0.0
-            # Explicitly map the MikroTik credentials to the sidecar
             env:
-              - name: MIKROTIK_DEFAULT_TTL
-                value: "10m"
-              - name: MIKROTIK_DEFAULT_Comment
-                value: "k8s"
               - name: MIKROTIK_BASEURL
-                valueFrom:
-                  secretKeyRef:
-                    name: mikrotik-credentials
-                    key: MIKROTIK_BASEURL
+                value: "<MIKROTIK_BASEURL>" # AVP placeholder
               - name: MIKROTIK_USERNAME
-                valueFrom:
-                  secretKeyRef:
-                    name: mikrotik-credentials
-                    key: MIKROTIK_USERNAME
+                value: "<MIKROTIK_USERNAME>"
               - name: MIKROTIK_PASSWORD
-                valueFrom:
-                  secretKeyRef:
-                    name: mikrotik-credentials
-                    key: MIKROTIK_PASSWORD
+                value: "<MIKROTIK_PASSWORD>"
               - name: MIKROTIK_SKIP_TLS_VERIFY
-                valueFrom:
-                  secretKeyRef:
-                    name: mikrotik-credentials
-                    key: MIKROTIK_SKIP_TLS_VERIFY
-        
-        # ExternalDNS main container settings
+                value: "true"
         extraArgs:
           - --webhook-provider-url=http://localhost:8888
-        
-        # Policy: upsert-only prevents it from deleting records it didn't create
         policy: upsert-only
-        
-        # Safety: only touch your local domain
         domainFilters:
           - chockablock.home
-          
-        # Ownership: helps ExternalDNS track its own records on the MikroTik
         txtOwnerId: chockablock-cluster
-        
-        # Recommended: interval for checking changes
         interval: 1m
   destination:
     server: https://kubernetes.default.svc
@@ -69,3 +42,29 @@ spec:
     automated:
       prune: true
       selfHeal: true
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: static-auth
+  namespace: external-dns
+spec:
+  method: kubernetes
+  mount: kubernetes
+  kubernetes:
+    role: external-dns-role # This must match the role name configured in Vault
+    serviceAccount: default
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: mikrotik-vault-sync
+  namespace: external-dns
+spec:
+  vaultAuthRef: static-auth
+  mount: secret  # Your KV engine mount point
+  type: kv-v2
+  path: external-dns # The path where your secrets live in Vault
+  refreshAfter: 60s
+  destSecret:
+    name: mikrotik-credentials # This matches the name in your original App manifest
