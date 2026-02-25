@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: paperless-import-pv
+spec:
+  capacity:
+    storage: 100Gi # This doesn't limit the USB, just tells K8s the size
+  volumeMode: Filesystem
+  accessModes:
+    - ReadOnlyMany # We only need to read for the import
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: "" # Keep this empty for static PVs
+  nfs:
+    path: /mnt/paperless # Path from your Armbian /etc/exports
+    server: 192.168.0.16 # Replace with your Armbian's IP address
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: paperless-import-pvc
+  namespace: paperless-app
+spec:
+  accessModes:
+    - ReadOnlyMany
+  storageClassName: "" # Must match the PV
+  volumeName: paperless-import-pv # Explicitly link to the PV above
+  resources:
+    requests:
+      storage: 50Gi # Just needs to be less than or equal to PV capacity
