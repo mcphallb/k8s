@@ -61,11 +61,12 @@ metadata:
   name: mikrotik-vault-sync
   namespace: external-dns
 spec:
+  # This points to the VaultAuth resource we defined earlier
   vaultAuthRef: static-auth
-  mount: secret  # Your KV engine mount point
+  mount: secret
   type: kv-v2
-  path: external-dns # The path where your secrets live in Vault
+  path: external-dns  # Based on your "secret/external-dns" UI path
   refreshAfter: 60s
   destination:
-    name: mikrotik-credentials # This matches the name in your original App manifest
+    name: mikrotik-credentials
     create: true
