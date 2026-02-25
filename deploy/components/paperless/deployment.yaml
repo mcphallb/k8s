@@ -20,6 +20,12 @@ spec:
         - name: paperless-web
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.6
           env:
+            - name: PAPERLESS_TIKA_ENABLED
+              value: "1"
+            - name: PAPERLESS_TIKA_ENDPOINT
+              value: "http://localhost:9998"
+            - name: PAPERLESS_TIKA_GOTENBURG_ENDPOINT
+              value: "http://localhost:3000"
             - name: PAPERLESS_SECRET_KEY
               valueFrom:
                 secretKeyRef:
@@ -63,6 +69,13 @@ spec:
           volumeMounts:
             - name: consume
               mountPath: /home/printer # Points to the same PVC as paperless
+
+        - name: gotenberg
+          image: gotenberg/gotenberg:8.7
+          # Gotenberg uses a non-root user (1001), which is fine.
+
+        - name: tika
+          image: apache/tika:latest-full
       volumes:
         - name: data
           persistentVolumeClaim:
