@@ -1,4 +1,4 @@
-binnacle/matchbox/*
+binnacle/matchbox-data/*
 binnacle/tftpboot
 binnacle/dnsmasq/static-leases.conf
 binnacle/talosconfig/*
