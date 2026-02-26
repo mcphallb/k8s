@@ -4,16 +4,22 @@ metadata:
   name: traefik
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "1" # Deploy Traefik before your other apps
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   project: default
-  source:
-    chart: traefik
-    repoURL: https://traefik.github.io/charts
-    targetRevision: 34.0.0
-    helm:
-      valueFiles:
-        - $values/deploy/components/traefik/values.yaml # Reference your config folder
+  sources: # MUST be plural
+    - chart: traefik
+      repoURL: https://traefik.github.io/charts
+      targetRevision: 34.0.0
+      helm:
+        valueFiles:
+          # This refers to the 'ref' defined in the second source
+          - $values/deploy/components/traefik/values.yaml 
+    
+    - repoURL: https://gitea.nibblesnbits.org/mcpha1bj/chockablock.git # Change to your Git URL
+      targetRevision: HEAD
+      ref: values # This nickname maps to '$values' above
+  
   destination:
     server: https://kubernetes.default.svc
     namespace: traefik
