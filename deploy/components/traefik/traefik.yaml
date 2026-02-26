@@ -1,0 +1,26 @@
+# Simplified mapping of your traefik.yml
+ports:
+  web:
+    redirectTo: { port: websecure }
+  websecure:
+    tls:
+      enabled: true
+      certResolver: letsencrypt
+  mqtt:
+    port: 1883
+    expose: true
+  mqtts:
+    port: 8883
+    expose: true
+  metrics:
+    port: 8899
+    expose: true
+
+additionalArguments:
+  - "--providers.plugin.traefik-proxmox-provider.apiEndpoint=https://192.168.0.10:8006"
+  - "--providers.plugin.traefik-proxmox-provider.apiToken=eb559406-87ac-40ca-94a5-289c41bed187"
+  # Add other static flags from your traefik.yml here
+
+persistence:
+  enabled: true
+  path: /data
