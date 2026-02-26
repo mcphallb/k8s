@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: root-infrastructure
+  name: cert-manager
   namespace: argocd
 spec:
   project: default
