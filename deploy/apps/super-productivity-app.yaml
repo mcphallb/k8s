@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://gitea.nibblesnbits.org/mcpha1bj/chockablock.git
     targetRevision: HEAD
-    path: apps
+    path: deploy/components/super-productivity
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
