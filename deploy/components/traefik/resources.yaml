@@ -23,3 +23,18 @@ spec:
   redirectScheme:
     scheme: https
     permanent: true # From bjandlisa.yaml
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: nibblesnbits-wildcard
+  namespace: traefik
+spec:
+  secretName: nibblesnbits-tls
+  issuerRef:
+    name: letsencrypt-cloudflare
+    kind: ClusterIssuer
+  commonName: "*.nibblesnbits.org"
+  dnsNames:
+    - "nibblesnbits.org"
+    - "*.nibblesnbits.org"
