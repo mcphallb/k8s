@@ -1,0 +1,27 @@
+# deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: super-productivity
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: super-productivity
+  template:
+    metadata:
+      labels:
+        app: super-productivity
+    spec:
+      containers:
+      - name: super-productivity
+        image: johannesjo/super-productivity:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: data
+          mountPath: /data # Ensure path matches app requirements
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: super-productivity-data

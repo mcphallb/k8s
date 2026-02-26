@@ -1,0 +1,12 @@
+# pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: super-productivity-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn # Explicitly use Longhorn
+  resources:
+    requests:
+      storage: 2Gi

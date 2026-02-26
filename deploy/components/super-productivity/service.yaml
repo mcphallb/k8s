@@ -1,0 +1,16 @@
+# service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: super-productivity-svc
+  annotations:
+    # Optional: Force a specific pool if you have multiple
+    # metallb.universe.tf/address-pool: my-ip-pool
+spec:
+  selector:
+    app: super-productivity
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
