@@ -1,0 +1,25 @@
+apiVersion: traefik.io/v1alpha1
+kind: ServersTransport
+metadata:
+  name: proxmox-insecure-transport
+  namespace: traefik
+spec:
+  insecureSkipVerify: true # From proxmox01.yml & ultrafeeder.yml
+---
+apiVersion: traefik.io/v1alpha1
+kind: ServersTransport
+metadata:
+  name: argocd-transport
+  namespace: traefik
+spec:
+  insecureSkipVerify: true # From argocd.yml
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: redirect-to-https
+  namespace: traefik
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true # From bjandlisa.yaml

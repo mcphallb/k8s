@@ -58,7 +58,7 @@ metadata:
   annotations:
     external-dns.alpha.kubernetes.io/hostname: bjandlisa.chockablock.home
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: bjandlisa-website
   ports:

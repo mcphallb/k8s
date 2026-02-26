@@ -1,0 +1,46 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: main-routes
+  namespace: traefik
+spec:
+  entryPoints: [websecure]
+  routes:
+    # Proxmox (from proxmox01.yml)
+    - match: Host(`proxmox01.nibblesnbits.org`)
+      kind: Rule
+      services:
+        - name: proxmox-external-svc
+          port: 8006
+          serversTransport: proxmox-insecure-transport
+
+    # Paperless (from paperless.yml)
+    - match: Host(`paperless.nibblesnbits.org`)
+      kind: Rule
+      services:
+        - name: paperless-talos-service
+          port: 8000 # Pointing to 192.168.30.205 via your K8s service
+
+    # Meshmonitor (from meshmonitor.yml)
+    - match: Host(`meshmonitor.nibblesnbits.org`)
+      kind: Rule
+      services:
+        - name: meshmonitor-talos-service
+          port: 80 # Pointing to 192.168.30.201
+
+    # ArgoCD (from argocd.yml)
+    - match: Host(`argocd.nibblesnbits.org`)
+      kind: Rule
+      services:
+        - name: argocd-server
+          port: 443
+          serversTransport: argocd-transport
+
+    # Bjandlisa (from bjandlisa.yaml)
+    - match: Host(`bjandlisa.org`) || Host(`www.bjandlisa.org`)
+      kind: Rule
+      services:
+        - name: bjandlisa-svc
+          port: 80
+      tls:
+        certResolver: letsencrypt
