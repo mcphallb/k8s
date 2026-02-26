@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/your-user/gitops-repo.git
+    repoURL: https://gitea.nibblesnbits.org/mcpha1bj/chockablock.git
     targetRevision: HEAD
     path: apps
   destination:
