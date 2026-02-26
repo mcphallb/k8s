@@ -13,7 +13,7 @@ spec:
     targetRevision: 34.0.0
     helm:
       valueFiles:
-        - $values/components/traefik/values.yaml # Reference your config folder
+        - $components/traefik/values.yaml # Reference your config folder
   destination:
     server: https://kubernetes.default.svc
     namespace: traefik
