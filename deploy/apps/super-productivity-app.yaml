@@ -11,7 +11,7 @@ spec:
     path: deploy/components/super-productivity
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: super-productivity
   syncPolicy:
     automated:
       prune: true
