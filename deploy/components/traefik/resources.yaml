@@ -23,20 +23,3 @@ spec:
   redirectScheme:
     scheme: https
     permanent: true # From bjandlisa.yaml
----
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
-metadata:
-  name: traefik-dashboard
-  namespace: traefik
-spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`traefik.nibblesnbits.org`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
-      kind: Rule
-      services:
-        - name: api@internal # This is a special built-in Traefik service
-          kind: TraefikService
-  tls:
-    certResolver: letsencrypt # From your static config
