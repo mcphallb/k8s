@@ -3,7 +3,11 @@ deployment:
 
 ingressRoute:
   dashboard:
-    enabled: false
+    enabled: true
+    matchRule: Host(`traefik.nibblesnbits.org`)
+    entryPoints:
+      - websecure
+    
 api:
   dashboard: true
   insecure: true
