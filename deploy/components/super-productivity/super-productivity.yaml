@@ -11,7 +11,7 @@ spec:
     path: apps/super-productivity
   destination:
     server: https://kubernetes.default.svc
-    namespace: prod-apps # Namespace where the app will live
+    namespace: super-productivity # Namespace where the app will live
   syncPolicy:
     automated:
       prune: true
