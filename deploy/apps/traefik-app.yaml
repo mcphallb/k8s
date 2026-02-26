@@ -11,9 +11,9 @@ spec:
     chart: traefik
     repoURL: https://traefik.github.io/charts
     targetRevision: 34.0.0
-    helm:
-      valueFiles:
-        - $deploy/components/traefik/values.yaml # Reference your config folder
+    #helm:
+    #  valueFiles:
+    #    - $deploy/components/traefik/values.yaml # Reference your config folder
   destination:
     server: https://kubernetes.default.svc
     namespace: traefik
