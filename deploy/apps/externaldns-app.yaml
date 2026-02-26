@@ -21,13 +21,25 @@ spec:
               tag: v1.0.0
             env:
               - name: MIKROTIK_BASEURL
-                value: "<MIKROTIK_BASEURL>" # AVP placeholder
+                valueFrom:
+                  secretKeyRef:
+                    name: mikrotik-credentials
+                    key: MIKROTIK_BASEURL
               - name: MIKROTIK_USERNAME
-                value: "<MIKROTIK_USERNAME>"
+                valueFrom:
+                  secretKeyRef:
+                    name: mikrotik-credentials
+                    key: MIKROTIK_USERNAME
               - name: MIKROTIK_PASSWORD
-                value: "<MIKROTIK_PASSWORD>"
+                valueFrom:
+                  secretKeyRef:
+                    name: mikrotik-credentials
+                    key: MIKROTIK_PASSWORD
               - name: MIKROTIK_SKIP_TLS_VERIFY
-                value: "true"
+                valueFrom:
+                  secretKeyRef:
+                    name: mikrotik-credentials
+                    key: MIKROTIK_SKIP_TLS_VERIFY
         extraArgs:
           - --webhook-provider-url=http://localhost:8888
         policy: upsert-only
@@ -52,7 +64,7 @@ spec:
   method: kubernetes
   mount: kubernetes
   kubernetes:
-    role: external-dns-role # This must match the role name configured in Vault
+    role: external-dns-role
     serviceAccount: default
 ---
 apiVersion: secrets.hashicorp.com/v1beta1
@@ -61,11 +73,10 @@ metadata:
   name: mikrotik-vault-sync
   namespace: external-dns
 spec:
-  # This points to the VaultAuth resource we defined earlier
   vaultAuthRef: static-auth
   mount: secret
   type: kv-v2
-  path: external-dns  # Based on your "secret/external-dns" UI path
+  path: external-dns
   refreshAfter: 60s
   destination:
     name: mikrotik-credentials
