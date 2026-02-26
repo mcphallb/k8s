@@ -4,7 +4,6 @@ deployment:
 ingressRoute:
   dashboard:
     enabled: false
-
-additionalArguments:
-  - "--api.dashboard=true"
-  - "--api.insecure=false" # Best practice: Keep it secure in K8s
+api:
+  dashboard: true
+  insecure: true
