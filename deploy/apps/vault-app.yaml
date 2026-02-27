@@ -16,7 +16,7 @@ spec:
             enabled: true
           dataStorage:
             enabled: true
-            size: 10Gi
+            size: 1Gi
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: vault
