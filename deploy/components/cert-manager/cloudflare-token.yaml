@@ -1,24 +1,14 @@
-apiVersion: external-secrets.io/v1beta1
-kind: ExternalSecret
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
 metadata:
   name: cloudflare-api-token
   namespace: cert-manager
 spec:
-  refreshInterval: "1h"
-  secretStoreRef:
-    name: vault-backend # Must match your ClusterSecretStore
-    kind: ClusterSecretStore
-  target:
-    name: cloudflare-api-token-secret # This is what cert-manager will read
-    creationPolicy: Owner
-  data:
-    - secretKey: api-token
-      remoteRef:
-        key: traefik/cloudflare
-        property: CLOUDFLARE_DNS_API_TOKEN
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true  # Add this
+  vaultAuthRef: static-auth # Must match your VaultAuth resource name
+  mount: secret
+  path: traefik/cloudflare
+  type: kv-v2
+  refreshAfter: 1h
+  destination:
+    name: cloudflare-api-token-secret # This is the K8s secret cert-manager sees
+    create: true
