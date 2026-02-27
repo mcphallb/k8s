@@ -6,10 +6,10 @@ metadata:
     argocd.argoproj.io/sync-wave: "5"
 spec:
   acme:
-    email: your-email@nibblesnbits.org
+    email: mcpha1bj@gmail.com
     server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
-      name: letsencrypt-account-key # cert-manager will create this automatically
+      name: cloudflare-issuer-account-key # cert-manager will create this automatically
     solvers:
     - dns01:
         cloudflare:
