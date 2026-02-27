@@ -16,3 +16,9 @@ spec:
       remoteRef:
         key: traefik/cloudflare
         property: CLOUDFLARE_DNS_API_TOKEN
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true  # Add this
