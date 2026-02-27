@@ -16,9 +16,6 @@ ports:
   mqtts:
     port: 8883
     expose: true
-  metrics:
-    port: 8899
-    expose: true
 
 ingressRoute:
   dashboard:
