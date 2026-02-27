@@ -44,3 +44,5 @@ spec:
           port: 80
       tls:
         certResolver: letsencrypt
+  tls:
+    secretName: nibbles-wildcard-tls
