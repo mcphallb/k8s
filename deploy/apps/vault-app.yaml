@@ -20,6 +20,12 @@ spec:
             storageClass: nfs-client
           standalone:
             enabled: true
+  ignoreDifferences:
+    - group: admissionregistration.k8s.io
+      kind: MutatingWebhookConfiguration
+      name: vault-server-agent-injector-cfg
+      jsonPointers:
+        - /webhooks/0/clientConfig/caBundle
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: vault
