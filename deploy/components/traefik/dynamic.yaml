@@ -18,7 +18,8 @@ spec:
     - match: Host(`paperless.nibblesnbits.org`)
       kind: Rule
       services:
-        - name: paperless-talos-service
+        - name: paperless-web
+          namespace: paperless
           port: 8000 # Pointing to 192.168.30.205 via your K8s service
 
     # Meshmonitor (from meshmonitor.yml)
