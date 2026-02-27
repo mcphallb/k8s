@@ -76,3 +76,12 @@ spec:
   dnsNames:
     - "nibblesnbits.org"
     - "*.nibblesnbits.org"
+---
+apiVersion: traefik.io/v1alpha1
+kind: TLSStore
+metadata:
+  name: default
+  namespace: traefik
+spec:
+  defaultCertificate:
+    secretName: nibbles-wildcard-tls
