@@ -1,6 +1,25 @@
 deployment:
   enabled: true
 
+ports:
+  web:
+    redirectTo: { port: websecure }
+  websecure:
+    tls:
+      enabled: true
+      domains:
+        - "nibblesnbits.org"
+        - "*.nibblesnbits.org"
+  mqtt:
+    port: 1883
+    expose: true
+  mqtts:
+    port: 8883
+    expose: true
+  metrics:
+    port: 8899
+    expose: true
+
 ingressRoute:
   dashboard:
     enabled: true
