@@ -79,6 +79,7 @@ spec:
   kubernetes:
     role: cert-manager-role # This role must exist in Vault with read access
     serviceAccount: default
+  vaultConnectionRef: default
 ---
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultStaticSecret
