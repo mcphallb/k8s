@@ -17,6 +17,9 @@ spec:
           dataStorage:
             enabled: true
             size: 1Gi
+            storageClass: nfs-client
+          standalone:
+            enabled: true
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: vault
