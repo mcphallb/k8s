@@ -59,6 +59,16 @@ spec:
       - SkipDryRunOnMissingResource=true
 ---
 apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultConnection
+metadata:
+  name: default
+  namespace: cert-manager
+spec:
+  # Verify this URL! 
+  # If your vault service is named 'vault' in the 'vault' namespace:
+  address: http://vault-server.vault.svc.cluster.local:8200
+---
+apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultAuth
 metadata:
   name: static-auth-certmanager
