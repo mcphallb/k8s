@@ -10,9 +10,12 @@ spec:
     targetRevision: HEAD
     path: deploy/components/longhorn  # Ensure this points to where longhorn.yaml is
   destination:
-    server: https://kubernetes.default.svc
-    namespace: argocd
+    server: 'https://kubernetes.default.svc'
+    namespace: longhorn-system
   syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
 #    automated:
 #      prune: false
 #      selfHeal: true
