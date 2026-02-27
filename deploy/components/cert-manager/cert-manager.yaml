@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: cert-manager
-  namespace: argocd
+  namespace: cert-manager
   annotations:
     # Use sync-waves to ensure infra like cert-manager installs before your apps
     argocd.argoproj.io/sync-wave: "-5"
