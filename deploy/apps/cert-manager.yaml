@@ -69,7 +69,7 @@ spec:
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultAuth
 metadata:
-  name: static-auth
+  name: static-auth-certmanager
   namespace: cert-manager
 spec:
   method: kubernetes
@@ -85,7 +85,7 @@ metadata:
   name: cloudflare-api-token
   namespace: cert-manager # Make sure this matches your destination
 spec:
-  vaultAuthRef: static-auth
+  vaultAuthRef: static-auth-certmanager
   mount: secret
   type: kv-v2
   path: traefik/cloudflare
