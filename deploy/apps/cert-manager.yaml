@@ -77,3 +77,17 @@ spec:
   kubernetes:
     role: cert-manager-role # This role must exist in Vault with read access
   vaultConnectionRef: default
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: cloudflare-api-token
+  namespace: cert-manager # Make sure this matches your destination
+spec:
+  vaultAuthRef: static-auth
+  mount: secret
+  type: kv-v2
+  path: traefik/cloudflare
+  destination:
+    name: cloudflare-api-token-secret
+    create: true
