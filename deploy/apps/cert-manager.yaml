@@ -58,25 +58,26 @@ spec:
       - CreateNamespace=true
       - SkipDryRunOnMissingResource=true
 ---
-apiVersion: secrets.hashicorp.com/v1beta1
-kind: VaultConnection
-metadata:
-  name: default
-  namespace: vault-secrets-operator-system
-spec:
-  address: http://vault.vault.svc.cluster.local:8200 # Update this to your Vault URL
----
+#apiVersion: secrets.hashicorp.com/v1beta1
+#kind: VaultConnection
+#metadata:
+#  name: default
+#  namespace: cert-manager
+#spec:
+#  address: http://vault.vault.svc.cluster.local:8200 # Update this to your Vault URL
+#---
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultAuth
 metadata:
   name: static-auth
-  namespace: vault-secrets-operator-system
+  namespace: cert-manager
 spec:
   method: kubernetes
   mount: kubernetes
   kubernetes:
     role: cert-manager-role # This role must exist in Vault with read access
-  vaultConnectionRef: default
+    serviceAccount: default
+  #vaultConnectionRef: default
 ---
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultStaticSecret
