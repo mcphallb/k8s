@@ -6,16 +6,54 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://gitea.nibblesnbits.org/mcpha1bj/chockablock.git
-    targetRevision: HEAD
-    path: deploy/components/cert-manager  # Points to child app manifests
+    chart: cert-manager
+    repoURL: https://charts.jetstack.io
+    targetRevision: 1.14.4
+    helm:
+      releaseName: cert-manager
+      parameters:
+        - name: installCRDs
+          value: "true"
+      # This is the "Magic" part: It tells the Helm chart to also 
+      # include your specific Gitea manifests during installation
+      values: |
+        extraObjects: 
+          - apiVersion: secrets.hashicorp.com/v1beta1
+            kind: VaultStaticSecret
+            metadata:
+              name: cloudflare-api-token
+              namespace: cert-manager
+            spec:
+              vaultAuthRef: static-auth
+              mount: secret
+              path: traefik/cloudflare
+              type: kv-v2
+              destination:
+                name: cloudflare-api-token-secret
+                create: true
+          - apiVersion: cert-manager.io/v1
+            kind: ClusterIssuer
+            metadata:
+              name: letsencrypt-cloudflare
+            spec:
+              acme:
+                email: your-email@nibblesnbits.org
+                server: https://acme-v02.api.letsencrypt.org/directory
+                privateKeySecretRef:
+                  name: letsencrypt-account-key
+                solvers:
+                - dns01:
+                    cloudflare:
+                      apiTokenSecretRef:
+                        name: cloudflare-api-token-secret
+                        key: api-token
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: cert-manager
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - SkipDryRunOnMissingResource=true # <--- Add this
+      - SkipDryRunOnMissingResource=true
