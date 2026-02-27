@@ -58,14 +58,14 @@ spec:
       - CreateNamespace=true
       - SkipDryRunOnMissingResource=true
 ---
-#apiVersion: secrets.hashicorp.com/v1beta1
-#kind: VaultConnection
-#metadata:
-#  name: default
-#  namespace: cert-manager
-#spec:
-#  address: http://vault.vault.svc.cluster.local:8200 # Update this to your Vault URL
-#---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultConnection
+metadata:
+  name: default
+  namespace: cert-manager
+spec:
+  address: http://vault.vault.svc.cluster.local:8200 # Update this to your Vault URL
+---
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultAuth
 metadata:
