@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: 'https://gitea.nibblesnbits.org/mcpha1bj/chockablock.git'
-    path: deploy/component/openunison
+    path: deploy/components/openunison
     targetRevision: HEAD
   destination:
     server: 'https://kubernetes.default.svc'
