@@ -43,7 +43,7 @@ openunison:
 # DISABLED PROVIDERS
 # Ensure all these are commented out or set to false
 active_directory: 
-  host: openldap.openunison.svc.cluster.local
+  host: openldap-svc.openunison.svc.cluster.local
   port: 389
   base: dc=nibblesnbits,dc=org
   user_directory: ou=people,dc=nibblesnbits,dc=org
