@@ -4,7 +4,7 @@ metadata:
   name: openldap-svc
   namespace: openunison
   annotations:
-    metallb.universe.tf/loadBalancerIPs: 192.168.1.210 
+    metallb.universe.tf/loadBalancerIPs: 192.168.30.210 
 spec:
   type: LoadBalancer # MetalLB will give this a local IP
   ports:
