@@ -71,11 +71,3 @@ oidc:
     family_name: family_name
     display_name: name
     groups: groups
-
-# Ensure these are also present to avoid similar errors
-active_directory:
-  enabled: false
-saml:
-  enabled: false
-github:
-  enabled: false
