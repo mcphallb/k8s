@@ -1,10 +1,10 @@
 network:
   # Changed from nginx to traefik
   ingress_type: traefik
-  openunison_host: "openunison.yourdomain.com"
-  api_server_host: "k8sapi.yourdomain.com"
+  openunison_host: "openunison.nibblesnbits.org"
+  api_server_host: "k8sapi.nibblesnbits.org"
   # You must add a third unique host for the dashboard/portal
-  dashboard_host: "portal.yourdomain.com"
+  dashboard_host: "portal.nibblesnbits.org"
   
   # MetalLB handles the IP, Traefik handles the routing
   ingress_annotations:
@@ -50,4 +50,28 @@ saml: {enabled: false}
 # NETWORK POLICIES
 # Set to false initially to ensure Traefik can talk to OpenUnison
 network_policies:
+  enabled: false
+
+# Satisfy the Helm template requirements
+oidc:
+  enabled: false
+  client_id: "none"
+  issuer: "https://none"
+  user_in_idtoken: false
+  domain: ""
+  scopes: openid email profile groups
+  claims:
+    sub: sub
+    email: email
+    given_name: given_name
+    family_name: family_name
+    display_name: name
+    groups: groups
+
+# Ensure these are also present to avoid similar errors
+active_directory:
+  enabled: false
+saml:
+  enabled: false
+github:
   enabled: false
