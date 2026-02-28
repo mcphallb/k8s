@@ -43,13 +43,18 @@ openunison:
 # DISABLED PROVIDERS
 # Ensure all these are commented out or set to false
 active_directory: 
-  enabled: false
-oidc: 
-  enabled: false
-github: 
-  enabled: false
-saml: 
-  enabled: false
+  host: openldap.openunison.svc.cluster.local
+  port: 389
+  base: dc=nibblesnbits,dc=org
+  user_directory: ou=people,dc=nibblesnbits,dc=org
+  group_directory: ou=groups,dc=nibblesnbits,dc=org
+  admin_dn: cn=admin,dc=nibblesnbits,dc=org
+#oidc: 
+#  enabled: false
+#github: 
+#  enabled: false
+#saml: 
+#  enabled: false
 
 # NETWORK POLICIES
 # Set to false initially to ensure Traefik can talk to OpenUnison
@@ -57,17 +62,17 @@ network_policies:
   enabled: false
 
 # Satisfy the Helm template requirements
-oidc:
-  enabled: false
-  client_id: "none"
-  issuer: "https://none"
-  user_in_idtoken: false
-  domain: ""
-  scopes: openid email profile groups
-  claims:
-    sub: sub
-    email: email
-    given_name: given_name
-    family_name: family_name
-    display_name: name
-    groups: groups
+#oidc:
+#  enabled: false
+#  client_id: "none"
+#  issuer: "https://none"
+#  user_in_idtoken: false
+#  domain: ""
+#  scopes: openid email profile groups
+#  claims:
+#    sub: sub
+#    email: email
+#    given_name: given_name
+#    family_name: family_name
+#    display_name: name
+#    groups: groups

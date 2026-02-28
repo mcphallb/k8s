@@ -28,6 +28,18 @@ spec:
     - repoURL: https://gitea.nibblesnbits.org/mcpha1bj/chockablock.git
       targetRevision: HEAD # Or 'main' if that is your branch
       ref: values 
+  destinations:
+    - name: openldap
+      type: ldap
+      hostname: openldap.openunison.svc.cluster.local
+      port: 389
+      encryption: none # Change to tls if using 636
+      # This pulls the bind credentials from the Vault-synced secret
+      auth_dn: cn=admin,dc=nibblesnbits,dc=org
+      auth_pass: 
+        secret_name: orchestra-secrets-source
+        secret_key: LDAP_ADMIN_PASSWORD
+      base_dn: dc=nibblesnbits,dc=org
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: openunison
