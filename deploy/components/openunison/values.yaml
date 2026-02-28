@@ -23,13 +23,13 @@ orchestra:
 
 # DATABASE (NFS BACKED)
 # This replaces the commented-out database section in your example
-database:
-  type: postgres
-  embedded: true
-  persistence:
-    enabled: true
-    storageClass: "nfs-client" # Matches your NFS provider
-    size: 10Gi
+#database:
+#  type: postgres
+#  embedded: true
+#  persistence:
+#    enabled: true
+#    storageClass: "nfs-client" # Matches your NFS provider
+#    size: 10Gi
 
 # SECRETS (VAULT INTEGRATION)
 # OpenUnison will look for the secret 'orchestra-secrets-source' 
@@ -39,6 +39,7 @@ openunison:
   enable_provisioning: true
   non_secret_data:
     SHOW_PORTAL_ORGS: "false"
+  enable_internal_db: true
 
 # DISABLED PROVIDERS
 # Ensure all these are commented out or set to false
