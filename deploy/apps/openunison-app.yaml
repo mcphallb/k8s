@@ -12,7 +12,7 @@ spec:
       helm:
         valueFiles:
           - $values/deploy/component/openunison/values.yaml
-    - repoURL: 'https://nibblesnbits.org/mcpha1bj/chockablock.git' # Your Git Repo
+    - repoURL: 'https://gitea.nibblesnbits.org/mcpha1bj/chockablock.git' # Your Git Repo
       targetRevision: HEAD
       ref: values
   destination:
