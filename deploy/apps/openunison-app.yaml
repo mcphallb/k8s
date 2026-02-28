@@ -8,7 +8,7 @@ spec:
   sources:
     - repoURL: 'https://nexus.tremolo.io/repository/helm/'
       chart: orchestra
-      targetRevision: 1.0.* # Use a known stable version
+      targetRevision: 1.0.126 # Use a known stable version
       helm:
         valueFiles:
           - $values/deploy/component/openunison/values.yaml
