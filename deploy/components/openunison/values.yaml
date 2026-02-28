@@ -1,0 +1,19 @@
+# values.yaml
+network:
+  ingress_type: traefik
+  host: openunison.nibblesnbits.org
+  ingress_annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+
+cert_manager:
+  enabled: false # Set to true if using cert-manager, else provide secrets
+
+# Since no external IAM exists, we use a internal setup
+orchestra:
+  is_internal_db: true 
+  enable_provisioning: true
+
+# Configures the portal for your users
+webapp:
+  ingress_enabled: true

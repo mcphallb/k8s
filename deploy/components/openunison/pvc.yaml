@@ -1,0 +1,13 @@
+# pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: openunison-nfs-pvc
+  namespace: openunison
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: nfs-client # Change to your actual NFS storage class
+  resources:
+    requests:
+      storage: 5Gi

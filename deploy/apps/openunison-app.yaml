@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: openunison
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://gitea.nibblesnibits.org/mcpha1bj/chockablock.git'
+    path: deploy/component/openunison
+    targetRevision: HEAD
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: openunison
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
