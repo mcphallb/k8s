@@ -6,34 +6,28 @@ metadata:
 spec:
   project: default
   sources:
-    # 1. The Operator
     - repoURL: 'https://nexus.tremolo.io/repository/helm'
       chart: openunison-operator
       targetRevision: 3.0.23
-    
-    # 2. The Identity Engine
+
     - repoURL: 'https://nexus.tremolo.io/repository/helm'
       chart: orchestra
       targetRevision: 3.1.34
       helm:
         valueFiles:
-          # Pointer to your existing file path
           - $values/deploy/components/openunison/values.yaml
-    
-    # 3. The Login Portal
+
     - repoURL: 'https://nexus.tremolo.io/repository/helm'
       chart: orchestra-login-portal
       targetRevision: 2.3.84
       helm:
         valueFiles:
-          # Pointer to your existing file path
           - $values/deploy/components/openunison/values.yaml
 
-    # 4. Your Repository Alias
-    - repoURL: https://github.com/TremoloSecurityDemos/openunison-argocd.git
-      targetRevision: HEAD
-      ref: values # This 'ref' creates the '$values' variable used above
-      
+    # FIXED: Pointing to YOUR Gitea repo
+    - repoURL: https://gitea.nibblesnbits.org/mcpha1bj/chockablock.git
+      targetRevision: HEAD # Or 'main' if that is your branch
+      ref: values 
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: openunison
@@ -41,4 +35,3 @@ spec:
     automated: {prune: true, selfHeal: true}
     syncOptions:
       - CreateNamespace=true
-      - RespectIgnoreDifferences=true
