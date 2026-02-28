@@ -18,7 +18,7 @@ spec:
       helm:
         valueFiles:
           # Pointer to your existing file path
-          - $values/deploy/component/openunison/values.yaml
+          - $values/deploy/components/openunison/values.yaml
     
     # 3. The Login Portal
     - repoURL: 'https://nexus.tremolo.io/repository/helm'
@@ -27,7 +27,7 @@ spec:
       helm:
         valueFiles:
           # Pointer to your existing file path
-          - $values/deploy/component/openunison/values.yaml
+          - $values/deploy/components/openunison/values.yaml
 
     # 4. Your Repository Alias
     - repoURL: https://github.com/TremoloSecurityDemos/openunison-argocd.git
