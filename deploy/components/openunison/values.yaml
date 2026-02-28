@@ -42,10 +42,14 @@ openunison:
 
 # DISABLED PROVIDERS
 # Ensure all these are commented out or set to false
-active_directory: {enabled: false}
-oidc: {enabled: false}
-github: {enabled: false}
-saml: {enabled: false}
+active_directory: 
+  enabled: false
+oidc: 
+  enabled: false
+github: 
+  enabled: false
+saml: 
+  enabled: false
 
 # NETWORK POLICIES
 # Set to false initially to ensure Traefik can talk to OpenUnison
