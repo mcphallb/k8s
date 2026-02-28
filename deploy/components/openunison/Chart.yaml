@@ -1,0 +1,8 @@
+# deploy/components/openunison/Chart.yaml
+apiVersion: v2
+name: openunison-local
+version: 1.0.0
+dependencies:
+  - name: orchestra
+    version: "1.0.44" # Or your preferred version
+    repository: "https://nexus.tremolo.io/repository/helm/"
