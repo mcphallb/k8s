@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://gitea.nibblesnibits.org/mcpha1bj/chockablock.git'
+    repoURL: 'https://gitea.nibblesnbits.org/mcpha1bj/chockablock.git'
     path: deploy/component/openunison
     targetRevision: HEAD
   destination:
