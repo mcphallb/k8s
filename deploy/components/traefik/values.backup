@@ -1,0 +1,48 @@
+# deploy/components/traefik/values.yaml
+deployment:
+  enabled: true
+
+# PERSISTENCE: Required if you ever want to use Traefik's internal ACME 
+# or store plugins. Matches your 'path: /data' requirement.
+persistence:
+  enabled: true
+  path: /data
+  size: 1Gi
+
+# PORTS & ENTRYPOINTS
+ports:
+  web:
+    redirectTo:
+      port: websecure
+  websecure:
+    tls:
+      enabled: true
+      # Do NOT set a certResolver here. Let cert-manager handle it.
+  mqtt:
+    port: 1883
+    expose: true
+  mqtts:
+    port: 8883
+    expose: true
+  metrics:
+    port: 8899
+    expose: true
+
+# STATIC ARGUMENTS (The Proxmox Plugin & K8s Config)
+additionalArguments:
+  - "--providers.plugin.traefik-proxmox-provider.apiEndpoint=https://192.168.0.10:8006"
+  - "--providers.plugin.traefik-proxmox-provider.apiToken=eb559406-87ac-40ca-94a5-289c41bed187"
+  - "--providers.kubernetesingress.ingressclass=traefik"
+  # REMOVED: domains[0] flags. These were causing the default cert issue.
+
+# LOGGING
+logs:
+  general:
+    level: INFO
+  access:
+    enabled: true
+
+# DASHBOARD (Enabled but we will secure it via IngressRoute in the app launcher)
+api:
+  dashboard: true
+  insecure: true
