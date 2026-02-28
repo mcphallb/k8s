@@ -1,27 +1,53 @@
-# values.yaml
 network:
+  # Changed from nginx to traefik
   ingress_type: traefik
-  host: openunison.nibblesnbits.org
-  openunison_host: openunison.nibblesnbits.org
-  dashboard_host: dashboard.nibblesnbits.org
-  api_server_host: k8s-api.nibblesnbits.org
+  openunison_host: "openunison.yourdomain.com"
+  api_server_host: "k8sapi.yourdomain.com"
+  # You must add a third unique host for the dashboard/portal
+  dashboard_host: "portal.yourdomain.com"
+  
+  # MetalLB handles the IP, Traefik handles the routing
   ingress_annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.tls: "true"
+  
+  # Point to your cluster's API server
+  k8s_url: https://kubernetes.default.svc
+  force_redirect_to_tls: true
 
-cert_manager:
-  enabled: true # Set to true if using cert-manager, else provide secrets
-
-# Since no external IAM exists, we use a internal setup
+# NO EXTERNAL IAM SETUP
+# This tells OpenUnison to use its own database for users
 orchestra:
-  is_internal_db: true 
+  is_internal_db: true
   enable_provisioning: true
-  internal_db:
-    prompts:
-      - name: uid
-        label: User ID
-        type: text
 
-# Configures the portal for your users
-webapp:
-  ingress_enabled: true
+# DATABASE (NFS BACKED)
+# This replaces the commented-out database section in your example
+database:
+  type: postgres
+  embedded: true
+  persistence:
+    enabled: true
+    storageClass: "nfs-client" # Matches your NFS provider
+    size: 10Gi
+
+# SECRETS (VAULT INTEGRATION)
+# OpenUnison will look for the secret 'orchestra-secrets-source' 
+# that your Vault Secrets Operator is syncing.
+openunison:
+  replicas: 1
+  enable_provisioning: true
+  non_secret_data:
+    SHOW_PORTAL_ORGS: "false"
+
+# DISABLED PROVIDERS
+# Ensure all these are commented out or set to false
+active_directory: {enabled: false}
+oidc: {enabled: false}
+github: {enabled: false}
+saml: {enabled: false}
+
+# NETWORK POLICIES
+# Set to false initially to ensure Traefik can talk to OpenUnison
+network_policies:
+  enabled: false
