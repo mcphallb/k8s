@@ -55,6 +55,8 @@ spec:
               mountPath: /var/lib/ldap
             - name: ldap-config
               mountPath: /etc/ldap/slapd.d
+            - name: ldap-custom-ldif
+              mountPath: /container/service/slapd/assets/config/bootstrap/ldif/custom/
       volumes:
         - name: ldap-data
           persistentVolumeClaim:
