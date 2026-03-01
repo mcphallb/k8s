@@ -18,8 +18,8 @@ network:
 # NO EXTERNAL IAM SETUP
 # This tells OpenUnison to use its own database for users
 orchestra:
-  is_internal_db: true
-  enable_provisioning: true
+  is_internal_db: false
+  enable_provisioning: false
 
 services:
   enable_tokenrequest: false
@@ -48,8 +48,8 @@ openunison:
   enable_provisioning: true
   non_secret_data:
     SHOW_PORTAL_ORGS: "false"
-  enable_internal_db: true
-  db_host: amq  # This points to the internal AMQ pod's DB service
+  enable_internal_db: false
+  db_host: openunison-db  # This points to the internal AMQ pod's DB service
   db_type: mysql
 
 database:
