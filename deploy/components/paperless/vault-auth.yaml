@@ -4,8 +4,9 @@ metadata:
   name: paperless-auth
   namespace: paperless-ngx
 spec:
+  vaultConnectionRef: default # <--- Add this line explicitly
   method: kubernetes
   mount: kubernetes
   kubernetes:
-    role: paperless-role # This must match the role name in Vault
+    role: paperless-role
     serviceAccount: default
