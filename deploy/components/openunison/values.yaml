@@ -56,7 +56,7 @@ database:
   quartz_dialect: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
   driver: com.mysql.jdbc.Driver
   # Update to point to your new service
-  url: "jdbc:mysql://openunison-db:3306/unison?useSSL=false&allowPublicKeyRetrieval=true"
+  value: "jdbc:mysql://openunison-db:3306/unison?useSSL=false&amp;allowPublicKeyRetrieval=true"
 #  url: jdbc:mysql://openunison-db.openunison.svc.cluster.local:3306/unison?useSSL=false
   user: root
   validation: SELECT 1
