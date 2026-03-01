@@ -47,9 +47,10 @@ database:
   hibernate_dialect: org.hibernate.dialect.MySQL5InnoDBDialect
   quartz_dialect: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
   driver: com.mysql.jdbc.Driver
-  # CHANGE: Point to 'amq' instead of 'mariadb.mariadb.svc'
-  url: jdbc:mysql://amq:3306/unison?useSSL=false
-  user: root  # The internal AMQ database typically uses 'root' by default
+  # Update to point to your new service
+  url: "jdbc:mysql://openunison-db:3306/unison?useSSL=false&allowPublicKeyRetrieval=true"
+#  url: jdbc:mysql://openunison-db.openunison.svc.cluster.local:3306/unison?useSSL=false
+  user: root
   validation: SELECT 1
 
 # DISABLED PROVIDERS
