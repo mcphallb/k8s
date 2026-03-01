@@ -21,6 +21,12 @@ orchestra:
   is_internal_db: true
   enable_provisioning: true
 
+services:
+  enable_tokenrequest: false
+  token_request_audience: api
+  token_request_expiration_seconds: 600
+  node_selectors: []
+
 # DATABASE (NFS BACKED)
 # This replaces the commented-out database section in your example
 #database:
@@ -75,6 +81,18 @@ active_directory:
 # Set to false initially to ensure Traefik can talk to OpenUnison
 network_policies:
   enabled: false
+  ingress:
+    enabled: true
+    labels:
+      app.kubernetes.io/name: ingress-traefik
+  monitoring:
+    enabled: true
+    labels:
+      app.kubernetes.io/name: monitoring
+  apiserver:
+    enabled: false
+    labels:
+      app.kubernetes.io/name: kube-system
 
 # Satisfy the Helm template requirements
 #oidc:
