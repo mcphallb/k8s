@@ -43,6 +43,15 @@ openunison:
   db_host: amq  # This points to the internal AMQ pod's DB service
   db_type: mysql
 
+database:
+  hibernate_dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+  quartz_dialect: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+  driver: com.mysql.jdbc.Driver
+  # CHANGE: Point to 'amq' instead of 'mariadb.mariadb.svc'
+  url: jdbc:mysql://amq:3306/unison?useSSL=false
+  user: root  # The internal AMQ database typically uses 'root' by default
+  validation: SELECT 1
+
 # DISABLED PROVIDERS
 # Ensure all these are commented out or set to false
 active_directory: 
