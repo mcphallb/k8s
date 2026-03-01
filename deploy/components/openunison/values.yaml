@@ -70,6 +70,8 @@ active_directory:
   user_directory: ou=people,dc=nibblesnbits,dc=org
   group_directory: ou=groups,dc=nibblesnbits,dc=org
   admin_dn: cn=admin,dc=nibblesnbits,dc=org
+  ldap:
+    type: standard
 #oidc: 
 #  enabled: false
 #github: 
