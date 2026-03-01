@@ -35,6 +35,8 @@ orchestra:
 # OpenUnison will look for the secret 'orchestra-secrets-source' 
 # that your Vault Secrets Operator is syncing.
 openunison:
+  auto_timestamp: false
+  force_update: initial-deployment
   replicas: 1
   enable_provisioning: true
   non_secret_data:
