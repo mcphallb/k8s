@@ -40,6 +40,8 @@ openunison:
   non_secret_data:
     SHOW_PORTAL_ORGS: "false"
   enable_internal_db: true
+  db_host: amq  # This points to the internal AMQ pod's DB service
+  db_type: mysql
 
 # DISABLED PROVIDERS
 # Ensure all these are commented out or set to false
