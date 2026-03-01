@@ -1,0 +1,40 @@
+# 1. THE CONNECTION
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultConnection
+metadata:
+  name: paperless-vault-conn
+  namespace: paperless-ngx
+spec:
+  # Using the internal K8s DNS name for Vault
+  address: http://vault-server.vault.svc.cluster.local:8200 
+
+---
+# 2. THE AUTH
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: paperless-vault-auth  # <--- This name must match the Ref below
+  namespace: paperless-ngx
+spec:
+  method: kubernetes
+  mount: kubernetes
+  vaultConnectionRef: paperless-vault-conn
+  kubernetes:
+    role: paperless-role
+    serviceAccount: default
+
+---
+# 3. THE SECRET
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: paperless-secrets
+  namespace: paperless-ngx
+spec:
+  type: kv-v2
+  mount: secret 
+  path: paperless/config 
+  destination:
+    name: paperless-secrets 
+    create: true
+  vaultAuthRef: paperless-vault-auth # <--- This now points to the correct name
