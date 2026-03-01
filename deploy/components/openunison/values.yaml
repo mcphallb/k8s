@@ -41,6 +41,7 @@ services:
 # OpenUnison will look for the secret 'orchestra-secrets-source' 
 # that your Vault Secrets Operator is syncing.
 openunison:
+  ldap_type: standard
   auto_timestamp: false
   force_update: initial-deployment
   replicas: 1
@@ -67,11 +68,9 @@ active_directory:
   host: openldap-svc.openunison.svc.cluster.local
   port: 389
   base: dc=nibblesnbits,dc=org
-  user_directory: ou=people,dc=nibblesnbits,dc=org
-  group_directory: ou=groups,dc=nibblesnbits,dc=org
-  admin_dn: cn=admin,dc=nibblesnbits,dc=org
-  ldap:
-    type: standard
+  bind_dn: "cn=admin,dc=nibblesnbits,dc=org"
+  con_type: "ldap"
+  srv_dns: "false"
 #oidc: 
 #  enabled: false
 #github: 
