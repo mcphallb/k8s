@@ -9,7 +9,7 @@ spec:
   address: http://vault-server.vault.svc.cluster.local:8200 
 
 ---
-# 2. THE AUTH
+# 3. THE AUTH
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultAuth
 metadata:
@@ -33,7 +33,7 @@ metadata:
 spec:
   type: kv-v2
   mount: secret 
-  path: paperless/config 
+  path: paperless
   destination:
     name: paperless-secrets 
     create: true
