@@ -4,7 +4,7 @@ metadata:
   name: paperless-auth
   namespace: paperless-ngx
 spec:
-  vaultConnectionRef: default # <--- Add this line explicitly
+  vaultConnectionRef: paperless-vault-conn
   method: kubernetes
   mount: kubernetes
   kubernetes:

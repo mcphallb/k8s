@@ -1,7 +1,7 @@
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultConnection
 metadata:
-  name: default
+  name: paperless-vault-conn
   namespace: paperless-ngx
 spec:
   address: http://vault-server.vault.svc.cluster.local:8200 # Update to your Vault address
