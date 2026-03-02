@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ds389
+  namespace: openunison
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ds389
+  template:
+    metadata:
+      labels:
+        app: ds389
+    spec:
+      containers:
+      - name: ds389
+        image: 389ds/dirsrv:latest # Official image
+        env:
+        - name: DS_DM_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: orchestra-secrets-source
+              key: LDAP_ADMIN_PASSWORD
+        - name: DS_SUFFIX_NAME
+          value: "dc=nibblesnbits,dc=org"
+        ports:
+        - containerPort: 3389
+          name: ldap
+        - containerPort: 3636
+          name: ldaps
+        volumeMounts:
+        - name: ds-data
+          mountPath: /data
+      volumes:
+      - name: ds-data
+        persistentVolumeClaim:
+          claimName: ds-pvc-data
