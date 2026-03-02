@@ -49,3 +49,44 @@ spec:
   syncPolicy:
     syncOptions:
     - RespectIgnoreDifferences=true
+---
+# 1. THE CONNECTION
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultConnection
+metadata:
+  name: openunison-vault-conn
+  namespace: openunison
+spec:
+  # Using the internal K8s DNS name for Vault
+  address: http://vault-server.vault.svc.cluster.local:8200 
+
+---
+# 3. THE AUTH
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: openunison-vault-auth  # <--- This name must match the Ref below
+  namespace: openunison
+spec:
+  method: kubernetes
+  mount: kubernetes
+  vaultConnectionRef: openunison-vault-conn
+  kubernetes:
+    role: openunison-role
+    serviceAccount: default
+
+---
+# 3. THE SECRET
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: openunison-secrets
+  namespace: openunison
+spec:
+  type: kv-v2
+  mount: secret 
+  path: openunison/orchestra-keys
+  destination:
+    name: openunison-secrets 
+    create: true
+  vaultAuthRef: openunison-vault-auth # <--- This now points to the correct name
