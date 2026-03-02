@@ -1,0 +1,67 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: crowdsec
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - chart: crowdsec
+      repoURL: https://crowdsecurity.github.io/helm-charts
+      targetRevision: 0.16.0 # Pin your version!
+      helm:
+        valueFiles:
+         - $values/deploy/components/crowdsec-bouncer/values.yaml
+    - repoURL: https://gitea.nibblesnbits.org/mcpha1bj/chockablock.git
+      targetRevision: HEAD
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: crowdsec
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+---
+# 1. THE CONNECTION
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultConnection
+metadata:
+  name: crowdsec-vault-conn
+  namespace: crowdsec
+spec:
+  # Using the internal K8s DNS name for Vault
+  address: http://vault-server.vault.svc.cluster.local:8200 
+
+---
+# 3. THE AUTH
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: crowdsec-vault-auth  # <--- This name must match the Ref below
+  namespace: crowdsec
+spec:
+  method: kubernetes
+  mount: kubernetes
+  vaultConnectionRef: crowdsec-vault-conn
+  kubernetes:
+    role: crowdsec-role
+    serviceAccount: default
+
+---
+# 3. THE SECRET
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: crowdsec-secrets
+  namespace: crowdsec
+spec:
+  type: kv-v2
+  mount: secret 
+  path: crowdsec
+  destination:
+    name: crowdsec-vault-secret
+    create: true
+  vaultAuthRef: crowdsec-vault-auth # <--- This now points to the correct name

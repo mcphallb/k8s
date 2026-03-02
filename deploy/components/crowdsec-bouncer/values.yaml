@@ -1,0 +1,12 @@
+agent:
+  acquisition:
+    - namespace: traefik
+      podName: traefik-*
+      program: traefik
+lapi:
+  env:
+    - name: BOUNCER_KEY_TRAEFIK
+      valueFrom:
+        secretKeyRef:
+          name: crowdsec-vault-secret
+          key: bouncer_key
