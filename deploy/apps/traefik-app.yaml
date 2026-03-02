@@ -27,6 +27,13 @@ spec:
       prune: true
       selfHeal: true
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: crowdsec
+  labels:
+    pod-security.kubernetes.io/enforce: privileged # Add this line
+---
 # THE MAGIC BULLET: This makes your cert the global default
 apiVersion: traefik.io/v1alpha1
 kind: TLSStore
