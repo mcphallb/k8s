@@ -55,16 +55,42 @@ spec:
   tls:
     secretName: nibbles-wildcard-tls
 ---
+# 1. Provide a connection to Vault in this namespace
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultConnection
+metadata:
+  name: traefik-vault-conn
+  namespace: traefik
+spec:
+  address: http://vault-server.vault.svc.cluster.local:8200 
+
+---
+# 2. Auth for the Traefik ServiceAccount
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: traefik-vault-auth
+  namespace: traefik
+spec:
+  method: kubernetes
+  mount: kubernetes
+  vaultConnectionRef: traefik-vault-conn
+  kubernetes:
+    role: crowdsec-role # Assuming this role has access to the 'crowdsec' path
+    serviceAccount: traefik # Ensure this matches your Traefik SA name
+
+---
+# 3. The Secret that creates "crowdsec-bouncer-key"
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultStaticSecret
 metadata:
-  name: crowdsec-bouncer-secret
-  namespace: traefik # <--- Crucial: The bouncer needs it here
+  name: traefik-crowdsec-pull
+  namespace: traefik
 spec:
   type: kv-v2
   mount: secret 
-  path: crowdsec # The same path you used for the CrowdSec app
+  path: crowdsec # Same path where the key is stored
   destination:
-    name: crowdsec-bouncer-key # This is the name of the K8s secret it will create
+    name: crowdsec-bouncer-key # THIS is what Traefik is looking for
     create: true
-  vaultAuthRef: crowdsec-vault-auth # You can share the same connection/auth if configured
+  vaultAuthRef: traefik-vault-auth
