@@ -80,8 +80,8 @@ persistence:
 service:
   enabled: true
   type: LoadBalancer
-  # DO NOT use 'spec: {}' above this
-  externalTrafficPolicy: Local
+  spec:
+    externalTrafficPolicy: Local
 
 providers:
   kubernetesIngress:
