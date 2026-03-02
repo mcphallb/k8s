@@ -5,6 +5,8 @@ metadata:
   namespace: bjandlisa # Replace with the actual namespace used by that app
   annotations:
     kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/router.middlewares: traefik-crowdsec-bouncer@kubernetescrd
+
 spec:
   rules:
   - host: bjandlisa.org
