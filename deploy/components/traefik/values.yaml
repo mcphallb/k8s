@@ -32,3 +32,31 @@ experimental:
     crowdsec-bouncer:
       moduleName: "github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
       version: "v1.4.5" # Use the latest stable version
+
+ports:
+  web:
+    forwardedHeaders:
+      trustedIPs: &trustedIPs
+        - 127.0.0.1/32
+        - 10.0.0.0/8
+        - 192.168.0.0/16
+    redirectTo: { port: websecure }
+  websecure:
+    forwardedHeaders:
+      trustedIPs: *trustedIPs
+    tls:
+      enabled: true
+
+  mqtt:
+    port: 1883
+    expose: true
+  mqtts:
+    port: 8883
+    expose: true
+
+additionalArguments:
+  - "--providers.kubernetesingress.ingressclass=traefik"
+
+#persistence:
+#  enabled: true
+#  path: /data
