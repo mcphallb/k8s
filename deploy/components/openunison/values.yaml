@@ -1,6 +1,6 @@
 network:
   openunison_host: "login.nibblesnbits.org"
-  api_server_host: "login.nibblesnbits.org"
+  api_server_host: "openunison.nibblesnbits.org"
   session_inactivity_timeout_seconds: 900
   k8s_url: https://192.168.30.10:6443
   force_redirect_to_tls: false
