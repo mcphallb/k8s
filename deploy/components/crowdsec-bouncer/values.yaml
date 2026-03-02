@@ -10,3 +10,10 @@ lapi:
         secretKeyRef:
           name: crowdsec-vault-secret
           key: bouncer_key
+    # To enroll the Security Engine to the console
+    - name: ENROLL_KEY
+      value: 'cmm9b88xz001y02kv97qaordn'
+    - name: ENROLL_INSTANCE_NAME
+      value: 'chockablock'
+    - name: ENROLL_TAGS
+      value: 'k8s linux test'
