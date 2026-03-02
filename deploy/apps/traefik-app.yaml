@@ -76,8 +76,8 @@ spec:
   mount: kubernetes
   vaultConnectionRef: traefik-vault-conn
   kubernetes:
-    role: crowdsec-role # Assuming this role has access to the 'crowdsec' path
-    serviceAccount: traefik # Ensure this matches your Traefik SA name
+    role: traefik-role # Assuming this role has access to the 'crowdsec' path
+    serviceAccount: default # Ensure this matches your Traefik SA name
 
 ---
 # 3. The Secret that creates "crowdsec-bouncer-key"
