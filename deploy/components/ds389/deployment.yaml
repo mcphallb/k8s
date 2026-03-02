@@ -36,3 +36,20 @@ spec:
       - name: ds-data
         persistentVolumeClaim:
           claimName: ds-pvc-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ds389
+  namespace: openunison
+spec:
+  ports:
+    - port: 3389
+      targetPort: 3389
+      name: ldap
+    - port: 3636
+      targetPort: 3636
+      name: ldaps
+  selector:
+    app: ds389 # This MUST match the label in your Deployment's pod template
+  type: LoadBalancer
