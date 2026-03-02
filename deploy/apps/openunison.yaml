@@ -42,10 +42,10 @@ spec:
     repoURL: https://nexus.tremolo.io/repository/helm
     targetRevision: 2.3.84
 
-  - repoURL: https://github.com/TremoloSecurityDemos/openunison-argocd.git
-    path: userauth
+  - repoURL: https://gitea.nibblesnbits.org/mcpha1bj/chockablock.git
+    path: deploy/components/openunison
   - ref: values
-    repoURL: https://github.com/TremoloSecurityDemos/openunison-argocd.git
+    repoURL: https://gitea.nibblesnbits.org/mcpha1bj/chockablock.git
   syncPolicy:
     syncOptions:
     - RespectIgnoreDifferences=true
