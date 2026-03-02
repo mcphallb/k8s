@@ -44,15 +44,7 @@ ports:
   websecure:
     forwardedHeaders:
       trustedIPs: *trustedIPs
-    tls:
-      enabled: true
 
-  mqtt:
-    port: 1883
-    expose: true
-  mqtts:
-    port: 8883
-    expose: true
 
 additionalArguments:
   - "--providers.kubernetesingress.ingressclass=traefik"
