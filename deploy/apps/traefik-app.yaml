@@ -89,7 +89,7 @@ metadata:
 spec:
   type: kv-v2
   mount: secret 
-  path: crowdsec # Same path where the key is stored
+  path: crowdsec/traefik # Same path where the key is stored
   destination:
     name: crowdsec-bouncer-key # THIS is what Traefik is looking for
     create: true
