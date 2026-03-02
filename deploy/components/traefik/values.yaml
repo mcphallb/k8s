@@ -71,6 +71,13 @@ ports:
 additionalArguments:
   - "--providers.kubernetesingress.ingressclass=traefik"
 
-#persistence:
-#  enabled: true
-#  path: /data
+persistence:
+  enabled: true
+  path: /data
+
+
+service:
+  enabled: true
+  type: LoadBalancer
+  # DO NOT use 'spec: {}' above this
+  externalTrafficPolicy: Local
