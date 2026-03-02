@@ -1,8 +1,15 @@
 # Simplified mapping of your traefik.yml
 ports:
   web:
+    forwardedHeaders:
+      trustedIPs: &trustedIPs
+        - 127.0.0.1/32
+        - 10.0.0.0/8
+        - 192.168.0.0/16
     redirectTo: { port: websecure }
   websecure:
+    forwardedHeaders:
+      trustedIPs: *trustedIPs
     tls:
       enabled: true
       certResolver: letsencrypt
