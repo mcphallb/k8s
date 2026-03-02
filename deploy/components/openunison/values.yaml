@@ -45,9 +45,9 @@ monitoring:
 
 active_directory:
   base: dc=nibblesnbits,dc=org
-  host: "openldap-svc.openunison.svc.cluster.local"
-  port: "389"
-  bind_dn: "cn=admin,dc=nibblesnbits,dc=org"
+  host: "ds389.openunison.svc.cluster.local"
+  port: "3389"
+  bind_dn: "cn=Directory Manager"
   con_type: ldap
   srv_dns: "false"
 
@@ -98,6 +98,7 @@ services:
   
 openunison:
   replicas: 1
+  instance_name: openunison-stack
   non_secret_data:
     K8S_DB_SSO: oidc
     PROMETHEUS_SERVICE_ACCOUNT: system:serviceaccount:monitoring:prometheus-k8s
