@@ -60,7 +60,7 @@ metadata:
 spec:
   type: kv-v2
   mount: secret 
-  path: crowdsec
+  path: crowdsec/traefik
   destination:
     name: crowdsec-vault-secret
     create: true
