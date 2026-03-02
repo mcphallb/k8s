@@ -87,6 +87,6 @@ spec:
   mount: secret 
   path: openunison/orchestra-keys
   destination:
-    name: openunison-secrets 
+    name: openunison-secrets-source 
     create: true
   vaultAuthRef: openunison-vault-auth # <--- This now points to the correct name
