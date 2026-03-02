@@ -15,7 +15,10 @@ spec:
           - $values/deploy/components/traefik/values.yaml
     - repoURL: https://gitea.nibblesnbits.org/mcpha1bj/chockablock.git
       targetRevision: HEAD
-      ref: values
+      ref: values # Used for the $values variable in the Helm chart above
+    - repoURL: https://gitea.nibblesnbits.org/mcpha1bj/chockablock.git
+      targetRevision: HEAD
+      path: deploy/components/traefik/manifests # WATCH THIS PATH for plain YAMLs
   destination:
     server: https://kubernetes.default.svc
     namespace: traefik
@@ -51,3 +54,17 @@ spec:
           kind: TraefikService
   tls:
     secretName: nibbles-wildcard-tls
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: crowdsec-bouncer-secret
+  namespace: traefik # <--- Crucial: The bouncer needs it here
+spec:
+  type: kv-v2
+  mount: secret 
+  path: crowdsec # The same path you used for the CrowdSec app
+  destination:
+    name: crowdsec-bouncer-key # This is the name of the K8s secret it will create
+    create: true
+  vaultAuthRef: crowdsec-vault-auth # You can share the same connection/auth if configured
