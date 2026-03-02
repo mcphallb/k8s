@@ -1,5 +1,13 @@
 deployment:
   enabled: true
+  additionalVolumes:
+    - name: bouncer-key
+      secret:
+        secretName: crowdsec-bouncer-key # Matches the 'destination.name' above
+  additionalVolumeMounts:
+    - name: bouncer-key
+      mountPath: /etc/crowdsec-bouncer
+      readOnly: true
 
 ingressRoute:
   dashboard:
