@@ -71,10 +71,8 @@ ports:
 internal:
   port: 9000
   expose: true
-  exposedPort: 443
+  exposedPort: 9000
   protocol: TCP
-  forwardedHeaders:
-    trustedIPs: *trustedIPs
 
 additionalArguments:
   - "--providers.kubernetesingress.ingressclass=traefik"
