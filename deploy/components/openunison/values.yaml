@@ -72,6 +72,12 @@ myvd:
         remoteBase: "dc=nibblesnbits,dc=org"
         proxyDN: "cn=Directory Manager"
         proxyPass: "AD_BIND_PASSWORD" # This tells it to look in the Secret we created
+    - name: "accesslog"
+      className: "com.tremolosecurity.proxy.myvd.log.AccessLog"
+      options:
+        # This will send MyVD logs to the standard pod output (stdout)
+        logLevel: "info"
+
 #oidc:
 #  client_id: xxxxxx
 #  issuer: https://xxxxxx.okta.com/
