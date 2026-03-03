@@ -70,6 +70,7 @@ myvd:
       options:
         host: "ds389.openunison.svc.cluster.local"
         port: "3389"
+        localBase: "o=Data"
         remoteBase: "dc=nibblesnbits,dc=org"
         proxyDN: "cn=Directory Manager"
         proxyPass: "AD_BIND_PASSWORD" # This tells it to look in the Secret we created
