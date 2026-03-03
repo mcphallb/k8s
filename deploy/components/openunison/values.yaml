@@ -45,7 +45,7 @@ monitoring:
 
 active_directory:
   base: dc=nibblesnbits,dc=org
-  host: "ds391.openunison.svc.cluster.local"
+  host: "ds389.openunison.svc.cluster.local"
   port: "3389"
   bind_dn: "cn=Directory Manager"
   con_type: ldap
@@ -67,7 +67,7 @@ myvd:
     - name: "389ds-ldap"
       className: "net.sourceforge.myvd.inserts.ldap.LdapInsert"
       options:
-        host: "ds391.openunison.svc.cluster.local"
+        host: "ds389.openunison.svc.cluster.local"
         port: "3389"
         remoteBase: "dc=nibblesnbits,dc=org"
         proxyDN: "cn=Directory Manager"
