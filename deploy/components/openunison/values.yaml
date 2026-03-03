@@ -31,7 +31,7 @@ headlamp:
   enabled: true
 
 dashboard:
-  enabled: false
+  enabled: true
 
 certs:
   use_k8s_cm: false
