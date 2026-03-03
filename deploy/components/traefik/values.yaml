@@ -59,7 +59,7 @@ ports:
         - 2405:b500::/32
         - 2405:8100::/32
         - 2a06:98c0::/29
-        - 2c0f:f248::/32
+        - 2c0f:f248::/33
         # Internal Networks (So you see your own LAN IPs)
         - 10.244.0.0/16
         - 10.0.0.0/8
@@ -68,6 +68,13 @@ ports:
     forwardedHeaders:
       trustedIPs: *trustedIPs
 
+internal:
+  port: 9000
+  expose: true
+  exposedPort: 443
+  protocol: TCP
+  forwardedHeaders:
+    trustedIPs: *trustedIPs
 
 additionalArguments:
   - "--providers.kubernetesingress.ingressclass=traefik"
@@ -89,3 +96,21 @@ providers:
       enabled: true
       # Format: "namespace/service-name"
       pathOverride: "traefik/traefik"
+
+extraObjects:
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      name: traefik-internal
+      namespace: traefik # Ensure this matches your Traefik namespace
+      annotations:
+         metallb.universe.tf/address-pool: local-network-pool 
+    spec:
+      type: LoadBalancer
+      selector:
+        app.kubernetes.io/name: traefik
+        app.kubernetes.io/instance: traefik-release-name # Match your Argo app name
+      ports:
+        - name: websecure
+          port: 443
+          targetPort: internal # Maps to the 'internal' port 9000 we defined above
