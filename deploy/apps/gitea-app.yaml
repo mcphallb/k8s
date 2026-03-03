@@ -11,7 +11,7 @@ spec:
       targetRevision: 12.5.0
       helm:
         valueFiles:
-          - $values/deploy/components/gitea/value.yaml
+          - $values/deploy/components/gitea/values.yaml
     - repoURL: https://gitea.nibblesnbits.org/mcpha1bj/chockablock.git
       targetRevision: HEAD
       ref: values
