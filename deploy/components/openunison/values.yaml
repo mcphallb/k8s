@@ -57,6 +57,9 @@ active_directory:
   # ADD THESE TWO LINES:
   search_filter: "(uid={0})"
   user_id_attribute: "uid"
+  ignoreRefs: "true"
+  type: "standard"
+  passBind: "false"
 
 myvd:
   config:
