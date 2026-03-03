@@ -101,8 +101,6 @@ extraObjects:
     metadata:
       name: traefik-internal
       namespace: traefik # Ensure this matches your Traefik namespace
-      annotations:
-         metallb.universe.tf/address-pool: local-network-pool 
     spec:
       type: LoadBalancer
       selector:
