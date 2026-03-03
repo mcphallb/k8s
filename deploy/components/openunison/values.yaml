@@ -117,6 +117,27 @@ openunison:
   #- CN=k8s-users,CN=Users,DC=ent2k12,DC=domain,DC=com
 
 #myvd_configmap: myvdconfig
+# Under the root of your values.yaml
+myvd:
+  # This section configures the embedded MyVirtualDirectory engine
+  config:
+    # 1. Map 389-ds attributes to standard OpenUnison names
+    # Syntax: local_name=remote_name
+    - name: "attribute_mapper"
+      className: "net.sourceforge.myvd.inserts.mapping.AttributeMapper"
+      options:
+        # We map uid to samaccountname so OpenUnison's AD logic works
+        # We map uniqueMember to member for group logic
+        mapping: "uid=samaccountname,uniqueMember=member"
+    
+    # 2. Add static object classes if needed (optional)
+    - name: "object_class_adder"
+      className: "net.sourceforge.myvd.inserts.mapping.AddAttribute"
+      options:
+        attributeName: "objectClass"
+        attributeValue: "user"
+        objectClass: "inetOrgPerson"
+
 
 # For Namespace as a Service
 
