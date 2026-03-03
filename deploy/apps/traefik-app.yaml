@@ -44,24 +44,6 @@ spec:
   defaultCertificate:
     secretName: nibbles-wildcard-tls
 ---
-# SECURE DASHBOARD ROUTE
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
-metadata:
-  name: traefik-dashboard
-  namespace: traefik
-spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`traefik.nibblesnbits.org`)
-      kind: Rule
-      services:
-        - name: api@internal
-          kind: TraefikService
-  tls:
-    secretName: nibbles-wildcard-tls
----
 # 1. Provide a connection to Vault in this namespace
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultConnection
