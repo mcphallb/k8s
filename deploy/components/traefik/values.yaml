@@ -69,7 +69,6 @@ ports:
       trustedIPs: *trustedIPs
   internal:
     port: 9000
-    expose: true
     exposedPort: 443 
     protocol: TCP
     forwardedHeaders:
