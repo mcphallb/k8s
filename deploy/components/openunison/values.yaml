@@ -44,7 +44,8 @@ monitoring:
 # Uncomment one of the below options for authentication
 
 active_directory:
-  base: dc=nibblesnbits,dc=org
+  base: "dc=nibblesnbits,dc=org"
+  vbase: "o=Data"
   host: "ds389.openunison.svc.cluster.local"
   port: "3389"
   bind_dn: "cn=Directory Manager"
