@@ -51,6 +51,9 @@ active_directory:
   bind_dn: "cn=Directory Manager"
   con_type: ldap
   srv_dns: "false"
+  base: "o=Data"  # Was dc=nibblesnbits,dc=org
+  user_base: "ou=people,o=Data" # Use the virtual root
+  group_base: "ou=Groups,o=Data" # Use the virtual root
   # ADD THESE TWO LINES:
   search_filter: "(uid={0})"
   user_id_attribute: "uid"
