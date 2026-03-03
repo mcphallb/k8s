@@ -67,12 +67,13 @@ ports:
   websecure:
     forwardedHeaders:
       trustedIPs: *trustedIPs
-
-internal:
-  port: 9000
-  expose: true
-  exposedPort: 9000
-  protocol: TCP
+  internal:
+    port: 9000
+    expose: true
+    exposedPort: 443 
+    protocol: TCP
+    forwardedHeaders:
+      trustedIPs: *trustedIPs
 
 additionalArguments:
   - "--providers.kubernetesingress.ingressclass=traefik"
