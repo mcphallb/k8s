@@ -20,8 +20,6 @@ spec:
         - name: paperless-web
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.8
           env:
-            - name: PAPERLESS_TRUSTED_PROXIES
-              value: 192.168.0.16
             - name: PAPERLESS_CSRF_TRUSTED_ORIGINS
               value: "https://paperless.nibblesnbits.org"
             - name: PAPERLESS_TIKA_ENABLED
@@ -41,11 +39,21 @@ spec:
                   name: paperless-secrets
                   key: DB_PASS
             - name: PAPERLESS_REDIS
-              value: redis://redis:6379
+              value: "redis://redis:6379"
             - name: PAPERLESS_DBHOST
-              value: postgres
+              value: "postgres"
             - name: PAPERLESS_OCR_LANGUAGE
-              value: eng
+              value: "eng"
+            - name: PAPERLESS_CONSUMER_ENABLE_BARCODES
+              value: "true"
+            - name: PAPERLESS_CONSUMER_ENABLE_ASN_BARCODE
+              value: "true"
+            - name: PAPERLESS_CONSUMER_ASN_BARCODE_PREFIX
+              value: "ASN"
+            - name: PAPERLESS_CONSUMER_ENABLE_COLLATE_DOUBLE_SIDED
+              value: "true"
+            - name: PAPERLESS_CONSUMER_RECURSIVE
+              value: "true"
           volumeMounts:
             - name: data
               mountPath: /usr/src/paperless/data
@@ -67,12 +75,21 @@ spec:
               value: "scan123"
             - name: FTP_USER_HOME
               value: "/home/printer"
+            - name: PUBLICHOST
+              value: "192.168.30.204"
+            - name: FTP_PASSIVE_PORTS
+              value: "30000:30009"
           ports:
             - containerPort: 21
             - containerPort: 30000 # Passive range
+            - containerPort: 30001
+            - containerPort: 30002
+            - containerPort: 30003
+            - containerPort: 30004
+            - containerPort: 30005
           volumeMounts:
             - name: consume
-              mountPath: /home/printer # Points to the same PVC as paperless
+              mountPath: /home/printer
 
         - name: gotenberg
           image: gotenberg/gotenberg:8.7
