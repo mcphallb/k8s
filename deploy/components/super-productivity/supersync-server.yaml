@@ -19,6 +19,8 @@ spec:
         env:
         - name: PORT
           value: "1900"
+        - name: PUBLIC_URL
+          value: "https://supersync.nibblesnbits.org"
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
