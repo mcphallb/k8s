@@ -3,9 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: super-productivity-svc
-  annotations:
-    # Optional: Force a specific pool if you have multiple
-    # metallb.universe.tf/address-pool: my-ip-pool
+  namespace: super-productivity # Added for consistency
 spec:
   selector:
     app: super-productivity
