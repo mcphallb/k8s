@@ -5,15 +5,14 @@ metadata:
   name: super-productivity-vault-conn
   namespace: super-productivity
 spec:
-  # Using the internal K8s DNS name for Vault
   address: http://vault-server.vault.svc.cluster.local:8200 
 
 ---
-# 3. THE AUTH
-apiVersion: secrets.hashicorp.com/v2beta1
+# 2. THE AUTH
+apiVersion: secrets.hashicorp.com/v1beta1 # Changed from v2beta1 for compatibility
 kind: VaultAuth
 metadata:
-  name: super-productivity-vault-auth  # <--- This name must match the Ref below
+  name: super-productivity-vault-auth
   namespace: super-productivity
 spec:
   method: kubernetes
@@ -37,4 +36,4 @@ spec:
   destination:
     name: super-productivity-secrets 
     create: true
-  vaultAuthRef: super-productivity-vault-auth # <--- This now points to the correct name
+  vaultAuthRef: super-productivity-vault-auth
