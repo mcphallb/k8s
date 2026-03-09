@@ -14,14 +14,23 @@ spec:
     spec:
       containers:
       - name: supersync
-        image: johannesjo/super-productivity-sync:latest 
+        # Updated image name to the correct official repository
+        image: johannesjo/super-productivity-sync-server:latest 
         env:
-        - name: DATABASE_URL
-          value: "postgresql://supersync:superpassword@supersync-db-svc:5432/supersync_db"
-        - name: JWT_SECRET
-          value: "change-this-to-a-secure-random-string"
         - name: PORT
           value: "1900"
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: super-productivity-secrets
+              key: JWT_SECRET
+        - name: DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: super-productivity-secrets
+              key: POSTGRES_PASSWORD
+        - name: DATABASE_URL
+          value: "postgresql://supersync:$(DATABASE_PASSWORD)@supersync-db-svc:5432/supersync_db"
         ports:
         - containerPort: 1900
 ---
