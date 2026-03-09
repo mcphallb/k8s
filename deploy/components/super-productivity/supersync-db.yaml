@@ -18,17 +18,20 @@ spec:
         env:
         - name: POSTGRES_USER
           value: "supersync"
-        - name: POSTGRES_PASSWORD
-          value: "superpassword" # Recommendation: Use a K8s Secret here
         - name: POSTGRES_DB
           value: "supersync_db"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: super-productivity-secrets
+              key: POSTGRES_PASSWORD # Pulls from Vault
         volumeMounts:
         - name: db-storage
           mountPath: /var/lib/postgresql/data
       volumes:
       - name: db-storage
         persistentVolumeClaim:
-          claimName: super-productivity-data # Reusing your 5Gi PVC
+          claimName: super-productivity-data
 ---
 apiVersion: v1
 kind: Service
