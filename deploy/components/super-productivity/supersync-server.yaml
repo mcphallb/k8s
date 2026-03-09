@@ -21,10 +21,14 @@ spec:
           value: "1900"
         - name: PUBLIC_URL
           value: "https://supersync.nibblesnbits.org"
-        - name: SESSION_COOKIE_DOMAIN
+        - name: WEBAUTHN_RP_ID
           value: "nibblesnbits.org"
+        - name: WEBAUTHN_RP_NAME
+          value: "Super Productivity Sync"
+        - name: WEBAUTHN_ORIGIN
+          value: "https://supersync.nibblesnbits.org"
         - name: CORS_ORIGINS
-          value: "nibblesnbits.org"
+          value: "https://super-productivity.nibblesnbits.org"
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
