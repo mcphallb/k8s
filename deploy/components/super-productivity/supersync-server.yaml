@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: supersync-server
+  namespace: super-productivity
+spec:
+  selector:
+    matchLabels:
+      app: supersync-server
+  template:
+    metadata:
+      labels:
+        app: supersync-server
+    spec:
+      containers:
+      - name: supersync
+        image: johannesjo/super-productivity-sync:latest 
+        env:
+        - name: DATABASE_URL
+          value: "postgresql://supersync:superpassword@supersync-db-svc:5432/supersync_db"
+        - name: JWT_SECRET
+          value: "change-this-to-a-secure-random-string"
+        - name: PORT
+          value: "1900"
+        ports:
+        - containerPort: 1900
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: supersync-server-svc
+  namespace: super-productivity
+spec:
+  type: ClusterIP
+  selector:
+    app: supersync-server
+  ports:
+  - port: 1900
+    targetPort: 1900

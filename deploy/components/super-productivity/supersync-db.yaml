@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: supersync-db
+  namespace: super-productivity
+spec:
+  selector:
+    matchLabels:
+      app: supersync-db
+  template:
+    metadata:
+      labels:
+        app: supersync-db
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15-alpine
+        env:
+        - name: POSTGRES_USER
+          value: "supersync"
+        - name: POSTGRES_PASSWORD
+          value: "superpassword" # Recommendation: Use a K8s Secret here
+        - name: POSTGRES_DB
+          value: "supersync_db"
+        volumeMounts:
+        - name: db-storage
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: db-storage
+        persistentVolumeClaim:
+          claimName: super-productivity-data # Reusing your 5Gi PVC
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: supersync-db-svc
+  namespace: super-productivity
+spec:
+  selector:
+    app: supersync-db
+  ports:
+  - port: 5432
