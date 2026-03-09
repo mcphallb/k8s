@@ -23,6 +23,8 @@ spec:
           value: "https://supersync.nibblesnbits.org"
         - name: SESSION_COOKIE_DOMAIN
           value: "nibblesnbits.org"
+        - name: CORS_ORIGINS
+          value: "*"
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
