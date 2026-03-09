@@ -15,7 +15,7 @@ spec:
       containers:
       - name: supersync
         # Updated image name to the correct official repository
-        image: johannesjo/super-productivity-sync-server:latest 
+        image: 43ntropy/supersync:latest
         env:
         - name: PORT
           value: "1900"
