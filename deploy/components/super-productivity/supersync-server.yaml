@@ -21,6 +21,8 @@ spec:
           value: "1900"
         - name: PUBLIC_URL
           value: "https://supersync.nibblesnbits.org"
+        - name: SESSION_COOKIE_DOMAIN
+          value: "nibblesnbits.org"
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
