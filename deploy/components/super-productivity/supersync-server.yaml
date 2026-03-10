@@ -29,9 +29,10 @@ spec:
           value: "https://supersync.nibblesnbits.org"
         - name: CORS_ORIGINS
           value: "https://super-productivity.nibblesnbits.org"
-              SMTP_HOST
-        - name: SMTP_PORT
+        - name: SMTP_HOST
           value: "mail.smtp2go.com"
+        - name: SMTP_PORT
+          value: "2525"
         - name: SMTP_SECURE
           value: "false"
         - name: SMTP_USER
