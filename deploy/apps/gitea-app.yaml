@@ -38,3 +38,59 @@ spec:
       services:
         - name: gitea-ssh # Name of your Gitea SSH service
           port: 22         # Internal port Gitea listens on
+---
+# 1. THE CONNECTION
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultConnection
+metadata:
+  name: gitea-vault-conn
+  namespace: gitea
+spec:
+  # Using the internal K8s DNS name for Vault
+  address: http://vault-server.vault.svc.cluster.local:8200 
+
+---
+# 3. THE AUTH
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: gitea-vault-auth  # <--- This name must match the Ref below
+  namespace: gitea
+spec:
+  method: kubernetes
+  mount: kubernetes
+  vaultConnectionRef: gitea-vault-conn
+  kubernetes:
+    role: gitea-role
+    serviceAccount: default
+
+---
+# 3. THE SECRET
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: gitea-admin
+  namespace: gitea
+spec:
+  type: kv-v2
+  mount: secret 
+  path: gitea/admin
+  destination:
+    name: gitea-admin
+    create: true
+  vaultAuthRef: gitea-vault-auth # <--- This now points to the correct name
+---
+  # 3. THE SECRET
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: gitea-db
+  namespace: gitea
+spec:
+  type: kv-v2
+  mount: secret 
+  path: gitea/dbase
+  destination:
+    name: gitea-db-secret
+    create: true
+  vaultAuthRef: gitea-vault-auth # <--- This now points to the correct name

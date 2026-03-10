@@ -2,7 +2,7 @@
 gitea:
   config:
     server:
-      DOMAIN: gitea.nibblesnbits.SHOW_PORTAL_ORGS
+      DOMAIN: gitea.nibblesnbits.org
       ROOT_URL: https://gitea.nibblesnbits.org
       SSH_DOMAIN: gitea.nibblesnbits.org
       SSH_PORT: 2222
@@ -18,7 +18,7 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
-
+SHO
 
 persistence:
   enabled: true
