@@ -29,6 +29,20 @@ spec:
           value: "https://supersync.nibblesnbits.org"
         - name: CORS_ORIGINS
           value: "https://super-productivity.nibblesnbits.org"
+              SMTP_HOST
+        - name: SMTP_PORT
+          value: "mail.smtp2go.com"
+        - name: SMTP_SECURE
+          value: "false"
+        - name: SMTP_USER
+          value: "supersyncalsdkfjaklsdjfal"
+        - name: SMTP_PASS
+          valueFrom:
+            secretKeyRef:
+              name: super-productivity-secrets
+              key: SMTP_PASSWORD
+        - name: SMTP_FROM
+          value: "supersync@nibblesnbits.org"
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
