@@ -9,12 +9,6 @@ nodes:
     ipAddress: 192.168.30.10
     controlPlane: true
     installDisk: /dev/sda
-    inlinePatch:
-      machine:
-        install:
-          disk: /dev/sda
-          image: ghcr.io/siderolabs/installer:v1.12.2
-          bootloader: true
   - hostname: wk-01
     ipAddress: 192.168.30.20
     controlPlane: false
@@ -22,4 +16,18 @@ nodes:
   - hostname: wk-02
     ipAddress: 192.168.30.21
     controlPlane: false
-    installDisk: gdev/sda  
+    installDisk: gdev/sda
+
+controlPlane:
+  patches:
+    - |-
+      machine:
+        install:
+          image: factory.talos.dev/metal-installer/376567988ad370138ad8b2698212367b8edcb69b5fd68c80be1f2ec7d603b4ba:v1.12.3
+
+worker:
+  patches:
+    - |-
+      machine:
+        install:
+          image: factory.talos.dev/metal-installer/376567988ad370138ad8b2698212367b8edcb69b5fd68c80be1f2ec7d603b4ba:v1.12.3

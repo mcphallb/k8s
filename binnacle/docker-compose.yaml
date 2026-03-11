@@ -3,7 +3,7 @@ services:
     image: quay.io/poseidon/matchbox:v0.11.0
     container_name: matchbox
     volumes:
-      - ./matchbox/config:/var/lib/matchbox:ro
+      - ./matchbox:/var/lib/matchbox:ro
     ports:
       - "8080:8080"
     command: ["-address=0.0.0.0:8080", "-log-level=debug"]
