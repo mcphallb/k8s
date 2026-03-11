@@ -80,17 +80,17 @@ spec:
     create: true
   vaultAuthRef: gitea-vault-auth # <--- This now points to the correct name
 ---
-#  # 3. THE SECRET
-#apiVersion: secrets.hashicorp.com/v1beta1
-#kind: VaultStaticSecret
-#metadata:
-#  name: gitea-db
-#  namespace: gitea
-#spec:
-#  type: kv-v2
-#  mount: secret 
-#  path: gitea/dbase
-#  destination:
-#    name: gitea-db-secret
-#    create: true
-#  vaultAuthRef: gitea-vault-auth # <--- This now points to the correct name
+  # 3. THE SECRET
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: gitea-db
+  namespace: gitea
+spec:
+  type: kv-v2
+  mount: secret 
+  path: gitea/database
+  destination:
+    name: gitea-db-secret
+    create: true
+  vaultAuthRef: gitea-vault-auth # <--- This now points to the correct namgiteae
