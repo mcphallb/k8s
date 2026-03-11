@@ -62,3 +62,6 @@ postgresql:
     username: gitea
     database: gitea
     existingSecret: "gitea-db-secret"
+    secretKeys:
+      userPasswordKey: "password"
+      adminPasswordKey: "password"
