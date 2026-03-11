@@ -1,5 +1,7 @@
 # values.yaml
 gitea:
+  admin:
+    existingSecret: gitea-admin
   config:
     server:
       DOMAIN: gitea.nibblesnbits.org
@@ -30,3 +32,13 @@ ports:
       default: true
     exposedPort: 2222
     protocol: TCP
+
+postgresql-ha:
+  ## @param postgresql-ha.enabled Enable PostgreSQL HA
+  enabled: true
+  postgresql:
+    image:
+      repository: bitnamilegacy/postgresql-repmgr
+  pgpool:
+    image:
+      repository: bitnamilegacy/pgpool
