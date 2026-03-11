@@ -12,6 +12,13 @@ gitea:
     database:
       DB_TYPE: postgres
       HOST: gitea-postgresql:5432
+  additionalConfigFromEnvs:
+    - name: GITEA__DATABASE__PASSWD
+      valueFrom:
+        secretKeyRef:
+          name: gitea-db-secret
+          key: password
+
 
 
 ingress:
@@ -22,7 +29,7 @@ ingress:
   hosts:
     - host: gitea.nibblesnbits.org
       paths:
-        - path: /
+        - path: { "": "" }/
           pathType: Prefix
 
 persistence:
@@ -51,3 +58,7 @@ postgresql:
   persistence:
     enabled: true
     size: 5Gi
+  auth:
+    username: gitea
+    database: gitea
+    existingSecret: "gitea-db-secret"
