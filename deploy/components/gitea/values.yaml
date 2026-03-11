@@ -46,3 +46,6 @@ postgresql-ha:
 
 postgres:
   enabled: true
+  persistence:
+    enabled: true
+    size: 5Gi
