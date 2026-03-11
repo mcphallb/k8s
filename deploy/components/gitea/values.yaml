@@ -29,7 +29,7 @@ ingress:
   hosts:
     - host: gitea.nibblesnbits.org
       paths:
-        - path: { "": "" }/
+        - path: /
           pathType: Prefix
 
 persistence:
