@@ -9,6 +9,8 @@ gitea:
       SSH_DOMAIN: gitea.nibblesnbits.org
       SSH_PORT: 2222
       SSH_LISTEN_PORT: 22
+    database:
+      DB_TYPE: postgres
 
 ingress:
   enabled: true
@@ -32,6 +34,12 @@ ports:
       default: true
     exposedPort: 2222
     protocol: TCP
+
+valkey-cluster:
+  enabled: false
+
+valkey:
+  enabled: true
 
 postgresql-ha:
   enabled: false
