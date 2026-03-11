@@ -34,11 +34,7 @@ ports:
     protocol: TCP
 
 postgresql-ha:
-  ## @param postgresql-ha.enabled Enable PostgreSQL HA
+  enabled: false
+
+postgres:
   enabled: true
-  postgresql:
-    image:
-      repository: bitnamilegacy/postgresql-repmgr
-  pgpool:
-    image:
-      repository: bitnamilegacy/pgpool
