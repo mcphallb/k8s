@@ -44,7 +44,7 @@ valkey:
 postgresql-ha:
   enabled: false
 
-postgres:
+postgresql:
   enabled: true
   persistence:
     enabled: true
