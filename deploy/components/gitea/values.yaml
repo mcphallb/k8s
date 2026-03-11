@@ -11,6 +11,8 @@ gitea:
       SSH_LISTEN_PORT: 22
     database:
       DB_TYPE: postgres
+      HOST: gitea-postgresql:5432
+
 
 ingress:
   enabled: true
