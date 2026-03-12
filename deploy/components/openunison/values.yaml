@@ -61,41 +61,20 @@ monitoring:
 #  type: "standard"
 #  passBind: "false"
 active_directory:
+  host: "ds389.openunison.svc.cluster.local"
+  port: "3389"
+  bind_dn: "cn=Directory Manager"
+  con_type: "ldap"
+  # Use type: standard for 389-ds/OpenLDAP/etc
+  type: "standard"
+  # Logic for the Portal
   base: "o=Data"
   user_base: "ou=people,o=Data"
-  group_base: "ou=groups,o=Data" # Match lowercase from 01-init.ldif
+  group_base: "ou=groups,o=Data"
   search_filter: "(uid={0})"
   user_id_attribute: "uid"
 
 myvd:
-  config:
-    - name: "389ds-ldap"
-      className: "net.sourceforge.myvd.inserts.ldap.LdapInsert"
-      options:
-        host: "ds389.openunison.svc.cluster.local"
-        port: "3389"
-        localBase: "o=Data"
-        remoteBase: "dc=nibblesnbits,dc=org"
-        proxyDN: "cn=Directory Manager"
-        proxyPass: "LDAP_ADMIN_PASSWORD" # Ensure this key exists in your secret    
-    - name: "attribute_mapper"
-      className: "net.sourceforge.myvd.inserts.mapping.AttributeMapper"
-      options:
-        # Map the internal names to the 389-ds names
-        mapping: "uid=sAMAccountName,uniqueMember=memberOf"
-
-    - name: "389ds-ldap"
-      className: "net.sourceforge.myvd.inserts.ldap.LdapInsert"
-      options:
-        host: "ds389.openunison.svc.cluster.local"
-        port: "3389"
-        # THE BRIDGE:
-        localBase: "o=Data"
-        remoteBase: "dc=nibblesnbits,dc=org"
-        proxyDN: "cn=Directory Manager"
-        proxyPass: "AD_BIND_PASSWORD"
-        # Helps with 389-ds referrals
-        ignoreRefs: "true"
 
 #oidc:
 #  client_id: xxxxxx
@@ -146,7 +125,7 @@ openunison:
   replicas: 1
   instance_name: openunison-stack
   non_secret_data:
-    K8S_DB_SSO: oidc
+    K8S_DB_SSO: "ldap"
     PROMETHEUS_SERVICE_ACCOUNT: system:serviceaccount:monitoring:prometheus-k8s
     SHOW_PORTAL_ORGS: "false"
   secrets: []
@@ -154,6 +133,7 @@ openunison:
   use_standard_jit_workflow: true
   auto_timestamp: false
   force_update: initial-deployment
+  non_secret_data:
   # enable_activemq: true
   # activemq_use_pvc: true
   # role_attribute: portalGroups
