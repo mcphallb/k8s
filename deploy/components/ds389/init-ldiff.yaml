@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ds389-init-ldif
+  namespace: openunison
+data:
+  init.ldif: |
+    # Create the Top Level Suffix
+    dn: dc=nibblesnbits,dc=org
+    objectClass: top
+    objectClass: domain
+    dc: nibblesnbits
+
+    # Organizational Unit for Users
+    dn: ou=people,dc=nibblesnbits,dc=org
+    objectClass: top
+    objectClass: organizationalUnit
+    ou: people
+
+    # Organizational Unit for Groups
+    dn: ou=groups,dc=nibblesnbits,dc=org
+    objectClass: top
+    objectClass: organizationalUnit
+    ou: groups
+
+    # Create a Test User (for OpenUnison login testing)
+    dn: uid=jack,ou=people,dc=nibblesnbits,dc=org
+    objectClass: top
+    objectClass: person
+    objectClass: organizationalPerson
+    objectClass: inetOrgPerson
+    cn: Jack Nibbles
+    sn: Nibbles
+    uid: jack
+    userPassword: Password123
+    mail: jack@nibblesnbits.org
+
+    # Create the Kubernetes Admins Group
+    # Uses groupOfUniqueNames to support the uniqueMember attribute
+    dn: cn=k8s_admins,ou=groups,dc=nibblesnbits,dc=org
+    objectClass: top
+    objectClass: groupOfUniqueNames
+    cn: k8s_admins
+    uniqueMember: uid=jack,ou=people,dc=nibblesnbits,dc=org
