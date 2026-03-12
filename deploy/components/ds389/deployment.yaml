@@ -32,10 +32,17 @@ spec:
         volumeMounts:
         - name: ds-data
           mountPath: /data
+        # MOUNT THE INIT LDIF HERE
+        - name: init-ldif
+          mountPath: /data/config/01-init.ldif
+          subPath: init.ldif
       volumes:
       - name: ds-data
         persistentVolumeClaim:
-          claimName: ds-pvc-data
+          claimName: ds-pvc-Data
+      - name: init-ldif
+        configMap:
+          name: ds389-init-ldif
 ---
 apiVersion: v1
 kind: Service
@@ -52,4 +59,4 @@ spec:
       name: ldaps
   selector:
     app: ds389 # This MUST match the label in your Deployment's pod template
-  type: LoadBalancer
+  type: LoadBalancerr
