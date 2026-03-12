@@ -75,11 +75,7 @@ spec:
   type: kv-v2
   mount: secret 
   path: gitea/admin
-  destination  startupProbe:
-    enabled: true
-    initialDelaySeconds: 30
-    periodSeconds: 10
-    failureThreshold: 30 # Gives it 5 minutes to start before failing:
+  destination:  
     name: gitea-admin
     create: true
   vaultAuthRef: gitea-vault-auth # <--- This now points to the correct name
