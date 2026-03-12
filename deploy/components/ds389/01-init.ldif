@@ -5,7 +5,7 @@ metadata:
   namespace: openunison
 data:
   init.ldif: |
-    # Create the Top Level Suffix (if not already created by the container)
+    # Create the Top Level Suffix
     dn: dc=nibblesnbits,dc=org
     objectClass: top
     objectClass: domain
@@ -23,7 +23,7 @@ data:
     objectClass: organizationalUnit
     ou: groups
 
-    # Create a Test User (to log into OpenUnison)
+    # Create a Test User (for OpenUnison login testing)
     dn: uid=jack,ou=people,dc=nibblesnbits,dc=org
     objectClass: top
     objectClass: person
@@ -36,16 +36,9 @@ data:
     mail: jack@nibblesnbits.org
 
     # Create the Kubernetes Admins Group
-    # Note: Use groupOfUniqueNames for uniqueMember attribute
+    # Uses groupOfUniqueNames to support the uniqueMember attribute
     dn: cn=k8s_admins,ou=groups,dc=nibblesnbits,dc=org
     objectClass: top
     objectClass: groupOfUniqueNames
     cn: k8s_admins
-    uniqueMember: uid=jack,ou=people,dc=nibblesnbits,dc=org
-
-    # Create a General Users Group
-    dn: cn=k8s_users,ou=groups,dc=nibblesnbits,dc=org
-    objectClass: top
-    objectClass: groupOfUniqueNames
-    cn: k8s_users
     uniqueMember: uid=jack,ou=people,dc=nibblesnbits,dc=org
