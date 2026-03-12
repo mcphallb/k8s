@@ -40,6 +40,9 @@ spec:
         # Ensure the sub-charts (Postgres/Redis) also use the secret
         postgresql:
           enabled: true
+          image:
+            repository: bitnamilegacy/postgresql
+            tag: 15.4.0-debian-11-r45
           auth:
             existingSecret: "authentik-creds"
             secretKeys:
