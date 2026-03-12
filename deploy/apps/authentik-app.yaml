@@ -17,6 +17,22 @@ spec:
           # You can use a placeholder for the secret_key here 
           # because we override it with the env var below
           secret_key: "dummy-value-replaced-by-vault"
+          extraEnvVars:
+            - name: AUTHENTIK_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: authentik-creds
+                  key: authentik-key
+            - name: AUTHENTIK_POSTGRESQL__PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: authentik-creds
+                  key: postgres-password
+            - name: AUTHENTIK_REDIS__PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: authentik-creds
+                  key: redis-password
 
         # Map Vault-synced Secret keys to Authentik Environment Variables
         global:
