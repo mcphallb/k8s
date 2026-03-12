@@ -65,3 +65,16 @@ postgresql:
     secretKeys:
       userPasswordKey: "password"
       adminPasswordKey: "password"
+  livenessProbe:
+    initialDelaySeconds: 60
+    periodSeconds: 20
+    failureThreshold: 10
+  readinessProbe:
+    initialDelaySeconds: 60
+    periodSeconds: 20
+    failureThreshold: 10
+  startupProbe:
+    enabled: true
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    failureThreshold: 30 # Gives it 5 minutes to start before failing
