@@ -11,38 +11,84 @@ spec:
     chart: authentik
     helm:
       values: |
-        # Vault Injection Logic
-        deploymentAnnotations:
-          vault.hashicorp.com/agent-inject: "true"
-          vault.hashicorp.com/role: "authentik-role"
-          vault.hashicorp.com/agent-inject-secret-config: "secret/data/nibblesnbits/authentik"
-          # This template creates a file that looks like a shell script
-          vault.hashicorp.com/agent-inject-template-config: |
-            {{- with secret "secret/data/nibblesnbits/authentik" -}}
-            AUTHENTIK_SECRET_KEY="{{ .Data.data.authentik-key }}"
-            AUTHENTIK_POSTGRESQL__PASSWORD="{{ .Data.data.postgres-password }}"
-            AUTHENTIK_REDIS__PASSWORD="{{ .Data.data.redis-password }}"
-            {{- end -}}
-
-        # Tell Authentik's main container to source the Vault file
         authentik:
-          # We use extraEnvVars to point to the file created by the Vault Agent
-          extraEnvVars:
-            - name: AUTHENTIK_ENV_FILE
-              value: "/vault/secrets/config"
+          # Tell Authentik not to create its own secret
+          enabled: true 
+          # You can use a placeholder for the secret_key here 
+          # because we override it with the env var below
+          secret_key: "dummy-value-replaced-by-vault"
 
-        # Note: If you have an external DB/Redis, set 'enabled: false' for these
+        # Map Vault-synced Secret keys to Authentik Environment Variables
+        global:
+          envValueFrom:
+            - name: AUTHENTIK_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: authentik-creds
+                  key: authentik-key
+            - name: AUTHENTIK_POSTGRESQL__PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: authentik-creds
+                  key: postgres-password
+            - name: AUTHENTIK_REDIS__PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: authentik-creds
+                  key: redis-password
+
+        # Ensure the sub-charts (Postgres/Redis) also use the secret
         postgresql:
           enabled: true
           auth:
-            existingSecret: "authentik-db-secret" # You can also inject this via Vault
+            existingSecret: "authentik-creds"
+            secretKeys:
+              userPasswordKey: "postgres-password"
+              adminPasswordKey: "postgres-password"
+        
         redis:
           enabled: true
+          auth:
+            existingSecret: "authentik-creds"
+            existingSecretPasswordKey: "redis-password"
+---
+# 1. THE CONNECTION
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultConnection
+metadata:
+  name: authentik-vault-conn
+  namespace: authentik
+spec:
+  # Using the internal K8s DNS name for Vault
+  address: http://vault-server.vault.svc.cluster.local:8200 
+
+---
+# 3. THE AUTH
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: authentik-vault-auth  # <--- This name must match the Ref below
+  namespace: authentik
+spec:
+  method: kubernetes
+  mount: kubernetes
+  vaultConnectionRef: authentik-vault-conn
+  kubernetes:
+    role: authentik-role
+    serviceAccount: default
+
+---
+# THE SECRET (Vault Static Secret)
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: authentik-vault-secrets
+  namespace: authentik # Make sure this matches Authentik's namespace
+spec:
+  type: kv-v2
+  mount: secret 
+  path: nibblesnbits/authentik # The path in Vault we created earlier
   destination:
-    server: https://kubernetes.default.svc
-    namespace: authentik
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    createNamespace: true
+    name: authentik-creds # This will be the name of the K8s Secret
+    create: true
+  vaultAuthRef: authentik-vault-auth # You can reuse your existing auth if permissions allow
