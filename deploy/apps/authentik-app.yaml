@@ -1,0 +1,48 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: authentik
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://charts.goauthentik.io
+    targetRevision: 2024.2.2
+    chart: authentik
+    helm:
+      values: |
+        # Vault Injection Logic
+        deploymentAnnotations:
+          vault.hashicorp.com/agent-inject: "true"
+          vault.hashicorp.com/role: "authentik-role"
+          vault.hashicorp.com/agent-inject-secret-config: "secret/data/nibblesnbits/authentik"
+          # This template creates a file that looks like a shell script
+          vault.hashicorp.com/agent-inject-template-config: |
+            {{- with secret "secret/data/nibblesnbits/authentik" -}}
+            AUTHENTIK_SECRET_KEY="{{ .Data.data.authentik-key }}"
+            AUTHENTIK_POSTGRESQL__PASSWORD="{{ .Data.data.postgres-password }}"
+            AUTHENTIK_REDIS__PASSWORD="{{ .Data.data.redis-password }}"
+            {{- end -}}
+
+        # Tell Authentik's main container to source the Vault file
+        authentik:
+          # We use extraEnvVars to point to the file created by the Vault Agent
+          extraEnvVars:
+            - name: AUTHENTIK_ENV_FILE
+              value: "/vault/secrets/config"
+
+        # Note: If you have an external DB/Redis, set 'enabled: false' for these
+        postgresql:
+          enabled: true
+          auth:
+            existingSecret: "authentik-db-secret" # You can also inject this via Vault
+        redis:
+          enabled: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: authentik
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    createNamespace: true
