@@ -19,9 +19,9 @@ spec:
     server: 'https://kubernetes.default.svc'
     namespace: gitea
   syncPolicy:
-    automated:                             # Enables the "GitOps" auto-sync
-      prune: true
-      selfHeal: true
+#    automated:                             # Enables the "GitOps" auto-sync
+#      prune: true
+#      selfHeal: true
     syncOptions:
       - CreateNamespace=true
 ---
@@ -75,7 +75,11 @@ spec:
   type: kv-v2
   mount: secret 
   path: gitea/admin
-  destination:
+  destination  startupProbe:
+    enabled: true
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    failureThreshold: 30 # Gives it 5 minutes to start before failing:
     name: gitea-admin
     create: true
   vaultAuthRef: gitea-vault-auth # <--- This now points to the correct name
