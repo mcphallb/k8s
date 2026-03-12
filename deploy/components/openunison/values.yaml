@@ -73,6 +73,7 @@ active_directory:
   group_base: "ou=groups,o=Data"
   search_filter: "(uid={0})"
   user_id_attribute: "uid"
+  heartbeat_dn: "dc=nibblesnbits,dc=org"
 
 myvd:
 
