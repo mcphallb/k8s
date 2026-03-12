@@ -61,20 +61,23 @@ monitoring:
 #  type: "standard"
 #  passBind: "false"
 active_directory:
-  # This tells the Portal logic what to ask MyVD for
   base: "o=Data"
   user_base: "ou=people,o=Data"
-  group_base: "ou=Groups,o=Data"
-  search_filter: "(uid={0})"  # Critical: Use {0} as the placeholder
+  group_base: "ou=groups,o=Data" # Match lowercase from 01-init.ldif
+  search_filter: "(uid={0})"
   user_id_attribute: "uid"
 
 myvd:
   config:
-    - name: "accesslog"
-      className: "com.tremolosecurity.proxy.myvd.log.AccessLog"
+    - name: "389ds-ldap"
+      className: "net.sourceforge.myvd.inserts.ldap.LdapInsert"
       options:
-        logLevel: "info"
-
+        host: "ds389.openunison.svc.cluster.local"
+        port: "3389"
+        localBase: "o=Data"
+        remoteBase: "dc=nibblesnbits,dc=org"
+        proxyDN: "cn=Directory Manager"
+        proxyPass: "LDAP_ADMIN_PASSWORD" # Ensure this key exists in your secret    
     - name: "attribute_mapper"
       className: "net.sourceforge.myvd.inserts.mapping.AttributeMapper"
       options:
