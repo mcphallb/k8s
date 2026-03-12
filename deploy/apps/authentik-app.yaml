@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://charts.goauthentik.io
-    targetRevision: 2024.2.2
+    targetRevision: 2026.2.1
     chart: authentik
     helm:
       values: |
@@ -40,9 +40,6 @@ spec:
         # Ensure the sub-charts (Postgres/Redis) also use the secret
         postgresql:
           enabled: true
-          image:
-            repository: bitnamilegacy/postgresql
-            tag: 15.4.0-debian-11-r45
           auth:
             existingSecret: "authentik-creds"
             secretKeys:
