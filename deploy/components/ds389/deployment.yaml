@@ -39,7 +39,7 @@ spec:
       volumes:
       - name: ds-data
         persistentVolumeClaim:
-          claimName: ds-pvc-Data
+          claimName: ds-pvc-data
       - name: init-ldif
         configMap:
           name: ds389-init-ldif
