@@ -19,9 +19,9 @@ spec:
     server: 'https://kubernetes.default.svc'
     namespace: gitea
   syncPolicy:
-#    automated:                             # Enables the "GitOps" auto-sync
-#      prune: true
-#      selfHeal: true
+    automated:                             # Enables the "GitOps" auto-sync
+      prune: true
+      selfHeal: true
     syncOptions:
       - CreateNamespace=true
 ---
