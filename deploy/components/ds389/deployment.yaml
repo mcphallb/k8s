@@ -34,7 +34,7 @@ spec:
           mountPath: /data
         # MOUNT THE INIT LDIF HERE
         - name: init-ldif
-          mountPath: /data/config/01-init.ldif
+          mountPath: /data/config/init.ldif
           subPath: init.ldif
       volumes:
       - name: ds-data
