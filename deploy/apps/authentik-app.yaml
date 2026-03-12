@@ -51,6 +51,15 @@ spec:
           auth:
             existingSecret: "authentik-creds"
             existingSecretPasswordKey: "redis-password"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: authentik
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    createNamespace: true
 ---
 # 1. THE CONNECTION
 apiVersion: secrets.hashicorp.com/v1beta1
