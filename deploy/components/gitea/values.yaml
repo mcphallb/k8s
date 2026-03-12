@@ -65,16 +65,30 @@ postgresql:
     secretKeys:
       userPasswordKey: "password"
       adminPasswordKey: "password"
-  livenessProbe:
-    initialDelaySeconds: 60
-    periodSeconds: 20
-    failureThreshold: 10
   readinessProbe:
-    initialDelaySeconds: 60
-    periodSeconds: 20
-    failureThreshold: 10
-  startupProbe:
     enabled: true
     initialDelaySeconds: 30
     periodSeconds: 10
-    failureThreshold: 30 # Gives it 5 minutes to start before failing
+    failureThreshold: 10
+    exec:
+      command:
+        - /bin/sh
+        - -c
+        - -e
+        - |
+          # Use the 'postgres' superuser or pg_isready without a specific DB/User
+          pg_isready -U postgres -h 127.0.0.1 -p 5432
+  
+  # Also add/update the Liveness Probe to be less aggressive
+  livenessProbe:
+    enabled: true
+    initialDelaySeconds: 60
+    periodSeconds: 20
+    failureThreshold: 6
+    exec:
+      command:
+        - /bin/sh
+        - -c
+        - -e
+        - |
+          pg_isready -U postgres -h 127.0.0.1 -p 5432
