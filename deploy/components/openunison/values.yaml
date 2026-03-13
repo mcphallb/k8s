@@ -63,7 +63,7 @@ monitoring:
 
 myvd:
 
-#oidc:
+oidc:
   client_id: "AUTHENTIK_OPENUNISON_CLIENT_ID"
   client_secret: "AUTHENTIK_OPENUNISON_CLIENT_SECRET"
   issuer: https://authentik.nibblesnbits.org/application/o/openunison
