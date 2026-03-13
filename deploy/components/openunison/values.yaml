@@ -60,26 +60,13 @@ monitoring:
 #  ignoreRefs: "true"
 #  type: "standard"
 #  passBind: "false"
-active_directory:
-  host: "ds389.openunison.svc.cluster.local"
-  port: "3389"
-  bind_dn: "cn=Directory Manager"
-  con_type: "ldap"
-  # Use type: standard for 389-ds/OpenLDAP/etc
-  type: "standard"
-  # Logic for the Portal
-  base: "o=Data"
-  user_base: "ou=people,o=Data"
-  group_base: "ou=groups,o=Data"
-  search_filter: "(uid={0})"
-  user_id_attribute: "uid"
-  heartbeat_dn: "dc=nibblesnbits,dc=org"
 
 myvd:
 
 #oidc:
-#  client_id: xxxxxx
-#  issuer: https://xxxxxx.okta.com/
+  client_id: "AUTHENTIK_OPENUNISON_CLIENT_ID"
+  client_secret: "AUTHENTIK_OPENUNISON_CLIENT_SECRET"
+  issuer: https://authentik.nibblesnbits.org/application/o/openunison
 #  user_in_idtoken: false
 #  domain: ""
 #  scopes: openid email profile groups
@@ -162,3 +149,15 @@ openunison:
 #  user: "none"
 #  from: donotreply@domain.com
 #  tls: false
+
+env:
+  - name: AUTHENTIK_OPENUNISON_CLIENT_ID
+    valueFrom:
+      secretKeyRef:
+        name: openunison-authentik-secrets
+        key: AUTHENTIK_OPENUNISON_CLIENT_ID
+  - name: AUTHENTIK_OPENUNISON_CLIENT_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: openunison-authentik-secrets
+        key: AUTHENTIK_OPENUNISON_CLIENT_SECRET
