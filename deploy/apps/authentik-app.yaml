@@ -26,6 +26,7 @@ spec:
             secretKeys:
               userPasswordKey: "AUTHENTIK_POSTGRESQL__PASSWORD"
               adminPasswordKey: "AUTHENTIK_POSTGRESQL__PASSWORD"
+          usePasswordFiles: false
 
         # Traefik Ingress Configuration
         server:
@@ -83,8 +84,23 @@ metadata:
 spec:
   type: kv-v2
   mount: secret 
-  path: nibblesnbits/authentik
+  path: authentik/secretkey
   destination:
     name: authentik-secrets 
+    create: true
+  vaultAuthRef: authentik-vault-auth # <--- This now points to the correct name
+---
+# 3. THE SECRET
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: authentik-postgres-credentials
+  namespace: authentik
+spec:
+  type: kv-v2
+  mount: secret 
+  path: authentik/postgres-credentials
+  destination:
+    name: authentik-postgres-credentials
     create: true
   vaultAuthRef: authentik-vault-auth # <--- This now points to the correct name
