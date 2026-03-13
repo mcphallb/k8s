@@ -65,12 +65,9 @@ myvd:
 
 oidc:
   client_id: "SeKH5xJcEPMiaUlxynNxxhGU64J5ZsILBmuseFSp"
-  client_secret: "AUTHENTIK_OPENUNISON_CLIENT_SECRET"
   issuer: https://authentik.nibblesnbits.org/application/o/openunison
   user_in_idtoken: false
   domain: ""  
-  instance_name: orchestra-login-portal # This name is often part of the path
-
   scopes: openid email profile groups
   claims:
     sub: sub
@@ -139,7 +136,7 @@ openunison:
 #   hibernate_dialect: org.hibernate.dialect.MariaDBDialect
 #   quartz_dialect: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
 #   driver: org.mariadb.jdbc.Driver
-#   url: jdbc:mariadb://mariadb.mariadb.svc.cluster.local:3306/unison
+#   url: jdbc:mariadb://OIDC_CLIENT_SECRETmariadb.mariadb.svc.cluster.local:3306/unison
 #   user: unison
 #   validation: SELECT 1
 #   maxcons: 10
@@ -151,15 +148,3 @@ openunison:
 #  user: "none"
 #  from: donotreply@domain.com
 #  tls: false
-
-env:
-  - name: AUTHENTIK_OPENUNISON_CLIENT_ID
-    valueFrom:
-      secretKeyRef:
-        name: openunison-authentik-secrets
-        key: AUTHENTIK_OPENUNISON_CLIENT_ID
-  - name: AUTHENTIK_OPENUNISON_CLIENT_SECRET
-    valueFrom:
-      secretKeyRef:
-        name: openunison-authentik-secrets
-        key: AUTHENTIK_OPENUNISON_CLIENT_SECRET
