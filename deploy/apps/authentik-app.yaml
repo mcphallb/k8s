@@ -79,7 +79,7 @@ metadata:
 spec:
   type: kv-v2
   mount: secret 
-  path: authentik
+  path: nibblesnbits/authentik
   destination:
     name: authentik-secrets 
     create: true
