@@ -60,9 +60,9 @@ spec:
     namespace: authentik
   
   syncPolicy:
-#    automated:
-#      prune: true
-#      selfHeal: true
+    automated:
+      prune: true
+      selfHeal: true
     createNamespace: true
 ---
 # 1. THE CONNECTION
