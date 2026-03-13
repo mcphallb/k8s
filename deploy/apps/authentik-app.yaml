@@ -46,6 +46,7 @@ spec:
           enabled: true
           auth:
             existingSecret: "authentik-secrets"
+            passwordKey: "AUTHENTIK_POSTGRESQL__PASSWORD"
             userPasswordKey: "AUTHENTIK_POSTGRESQL__PASSWORD"
             adminPasswordKey: "AUTHENTIK_POSTGRESQL__PASSWORD"
             username: "authentik"
