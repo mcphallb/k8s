@@ -12,50 +12,31 @@ spec:
     helm:
       values: |
         authentik:
-          # 1. Provide the Secret Key from Vault
-          extraEnvVars:
-            - name: AUTHENTIK_SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: authentik-secrets
-                  key: secret-key
-            # 2. Map the DB password for the Authentik app (client side)
-            - name: AUTHENTIK_POSTGRESQL__PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: authentik-secrets
-                  key: postgres-password
-          
-          error_reporting:
-            enabled: true
+          # This one line injects EVERYTHING from your Vault secret
+          envFrom:
+            - secretRef:
+                name: authentik-secrets
 
-        # 3. Database Server Configuration
+        # Database Server Configuration
         postgresql:
           enabled: true
           auth:
+            # We still need this so the Postgres POD knows its own password
             existingSecret: "authentik-secrets"
             secretKeys:
-              userPasswordKey: "postgres-password"
-              adminPasswordKey: "postgres-password"
+              userPasswordKey: "AUTHENTIK_POSTGRESQL__PASSWORD"
+              adminPasswordKey: "AUTHENTIK_POSTGRESQL__PASSWORD"
 
-        # 4. Traefik Ingress Configuration
+        # Traefik Ingress Configuration
         server:
           ingress:
             enabled: true
-            ingressClassName: "traefik" # Specifically tell K8s to use Traefik
+            ingressClassName: "traefik"
             annotations:
               traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
               traefik.ingress.kubernetes.io/router.tls: "true"
-              # cert-manager annotation (optional, if you use it)
-              # cert-manager.io/cluster-issuer: "letsencrypt-prod"
             hosts:
               - authentik.nibblesnbits.org
-            paths:
-              - /
-            tls:
-              - hosts:
-                  - authentik.nibblesnbits.org
-                secretName: authentik-tls-cert
 
   destination:
     server: https://kubernetes.default.svc
