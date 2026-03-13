@@ -50,6 +50,7 @@ spec:
             adminPasswordKey: "AUTHENTIK_POSTGRESQL__PASSWORD"
             username: "authentik"
             database: "authentik"
+            usePasswordFiles: false
           primary:
             persistence:
               enabled: true
