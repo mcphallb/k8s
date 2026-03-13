@@ -16,57 +16,17 @@ spec:
           enabled: true 
           # You can use a placeholder for the secret_key here 
           # because we override it with the env var below
-          secret_key: "dummy-value-replaced-by-vault"
-          extraEnvVars:
-            - name: AUTHENTIK_SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: authentik-creds
-                  key: authentik-key
-            - name: AUTHENTIK_POSTGRESQL__PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: authentik-creds
-                  key: postgres-password
-            - name: AUTHENTIK_REDIS__PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: authentik-creds
-                  key: redis-password
-
-        # Map Vault-synced Secret keys to Authentik Environment Variables
-        global:
-          envValueFrom:
-            - name: AUTHENTIK_SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: authentik-creds
-                  key: authentik-key
-            - name: AUTHENTIK_POSTGRESQL__PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: authentik-creds
-                  key: postgres-password
-            - name: AUTHENTIK_REDIS__PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: authentik-creds
-                  key: redis-password
 
         # Ensure the sub-charts (Postgres/Redis) also use the secret
         postgresql:
           enabled: true
           auth:
-            existingSecret: "authentik-creds"
-            secretKeys:
-              userPasswordKey: "postgres-password"
-              adminPasswordKey: "postgres-password"
+            existingSecret: ""
         
         redis:
           enabled: true
           auth:
-            existingSecret: "authentik-creds"
-            existingSecretPasswordKey: "redis-password"
+            existingSecret: ""
   destination:
     server: https://kubernetes.default.svc
     namespace: authentik
@@ -76,44 +36,3 @@ spec:
 #      prune: true
 #      selfHeal: true
     createNamespace: true
----
-# 1. THE CONNECTION
-apiVersion: secrets.hashicorp.com/v1beta1
-kind: VaultConnection
-metadata:
-  name: authentik-vault-conn
-  namespace: authentik
-spec:
-  # Using the internal K8s DNS name for Vault
-  address: http://vault-server.vault.svc.cluster.local:8200 
-
----
-# 3. THE AUTH
-apiVersion: secrets.hashicorp.com/v1beta1
-kind: VaultAuth
-metadata:
-  name: authentik-vault-auth  # <--- This name must match the Ref below
-  namespace: authentik
-spec:
-  method: kubernetes
-  mount: kubernetes
-  vaultConnectionRef: authentik-vault-conn
-  kubernetes:
-    role: authentik-role
-    serviceAccount: default
-
----
-# THE SECRET (Vault Static Secret)
-apiVersion: secrets.hashicorp.com/v1beta1
-kind: VaultStaticSecret
-metadata:
-  name: authentik-vault-secrets
-  namespace: authentik # Make sure this matches Authentik's namespace
-spec:
-  type: kv-v2
-  mount: secret 
-  path: nibblesnbits/authentik # The path in Vault we created earlier
-  destination:
-    name: authentik-creds # This will be the name of the K8s Secret
-    create: true
-  vaultAuthRef: authentik-vault-auth # You can reuse your existing auth if permissions allow
