@@ -23,11 +23,14 @@ spec:
                 secretKeyRef:
                   name: authentik-secrets
                   key: secret-key # Make sure this matches the key in Vault
+        sever:
+          ingress:
+            enabled: true
+            hosts:
+              - authentik.nibblesnbits.org
 
         # Ensure the sub-charts (Postgres/Redis) also use the secret
         postgresql:
-          enabled: true
-        redis:
           enabled: true
   destination:
     server: https://kubernetes.default.svc
