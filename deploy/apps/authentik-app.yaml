@@ -22,7 +22,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: authentik-secrets
-                  key: AUTHENTIK_POSTGRESQL__NAME
+                  key: AUTHENTIK_POSTGRESQL__PASSWORD
 
         authentik:
           error_reporting:
@@ -32,7 +32,8 @@ spec:
           ingress:
             enabled: true
             ingressClassName: "traefik"
-            annotations:
+            annotations
+            - name: BITNAMI_DEBUG:
               traefik.ingress.kubernetes.io/router.tls: "true"
             hosts:
               - authentik.nibblesnbits.org
