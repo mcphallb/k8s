@@ -90,3 +90,18 @@ spec:
     name: orchestra-secrets-source 
     create: true
   vaultAuthRef: openunison-vault-auth # <--- This now points to the correct name
+  ---
+  # 3. THE SECRET
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: openunison-authentik
+  namespace: openunison
+spec:
+  type: kv-v2
+  mount: secret 
+  path: openunison/authentik
+  destination:
+    name: openunison-authentik-secrets 
+    create: true
+  vaultAuthRef: openunison-vault-auth # <--- This now points to the correct name
