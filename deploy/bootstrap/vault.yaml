@@ -1,0 +1,40 @@
+# 1. THE CONNECTION
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultConnection
+metadata:
+  name: argocd-vault-conn
+  namespace: argocd
+spec:
+  # Using the internal K8s DNS name for Vault
+  address: http://vault-server.vault.svc.cluster.local:8200 
+
+---
+# 3. THE AUTH
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: argocd-vault-auth  # <--- This name must match the Ref below
+  namespace: argocd
+spec:
+  method: kubernetes
+  mount: kubernetes
+  vaultConnectionRef: argocd-vault-conn
+  kubernetes:
+    role: argocd-role
+    serviceAccount: default
+
+---
+# 3. THE SECRET
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: argocd-secret
+  namespace: argocd
+spec:
+  type: kv-v2
+  mount: secret 
+  path: argocd
+  destination:
+    name: argocd-secret 
+    create: true
+  vaultAuthRef: argocd-vault-auth # <--- This now points to the correct name

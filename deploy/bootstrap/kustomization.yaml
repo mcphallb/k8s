@@ -10,6 +10,8 @@ resources:
   - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
   - root.yaml
   - ingress.yaml
+  - vault.yaml
 
 patches:
   - path: patch-argocd-server-lb.yaml
+  - path: patch-argocd-cm.yaml
