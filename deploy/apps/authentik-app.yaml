@@ -33,7 +33,7 @@ spec:
             enabled: true
             ingressClassName: "traefik"
             annotations
-            - name: BITNAMI_DEBUG:
+            - name: BITNAMI_DEBUG
               traefik.ingress.kubernetes.io/router.tls: "true"
             hosts:
               - authentik.nibblesnbits.org
