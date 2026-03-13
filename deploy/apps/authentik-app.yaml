@@ -16,17 +16,23 @@ spec:
           envFrom:
             - secretRef:
                 name: authentik-secrets
+          postgresql:
+            user: file:///postgres-creds/username
+            password: file:///postgres-creds/password
 
         # Database Server Configuration
         postgresql:
           enabled: true
-          auth:
-            # We still need this so the Postgres POD knows its own password
-            existingSecret: "authentik-secrets"
-            secretKeys:
-              userPasswordKey: "AUTHENTIK_POSTGRESQL__PASSWORD"
-              adminPasswordKey: "AUTHENTIK_POSTGRESQL__PASSWORD"
-          usePasswordFiles: false
+
+        worker:
+          volumes:
+            - name: postgres-creds
+              secret:
+                secretName: authentik-postgres-credentials
+          volumeMounts:
+            - name: postgres-creds
+              mountPath: /postgres-creds
+              readOnly: true          
 
         # Traefik Ingress Configuration
         server:
@@ -38,6 +44,14 @@ spec:
               traefik.ingress.kubernetes.io/router.tls: "true"
             hosts:
               - authentik.nibblesnbits.org
+            volumes:
+              - name: postgres-creds
+                secret:
+                  secretName: authentik-postgres-credentials
+            volumeMounts:
+              - name: postgres-creds
+                mountPath: /postgres-creds
+                readOnly: true
 
   destination:
     server: https://kubernetes.default.svc
