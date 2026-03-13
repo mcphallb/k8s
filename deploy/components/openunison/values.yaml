@@ -68,7 +68,8 @@ oidc:
   client_secret: "AUTHENTIK_OPENUNISON_CLIENT_SECRET"
   issuer: https://authentik.nibblesnbits.org/application/o/openunison
   user_in_idtoken: false
-  domain: ""  instance_name: orchestra-login-portal # This name is often part of the path
+  domain: ""  
+  instance_name: orchestra-login-portal # This name is often part of the path
 
   scopes: openid email profile groups
   claims:
