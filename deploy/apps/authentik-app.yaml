@@ -32,26 +32,28 @@ spec:
           ingress:
             enabled: true
             ingressClassName: "traefik"
-            annotations
-            - name: BITNAMI_DEBUG
+            annotations:
+              traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
               traefik.ingress.kubernetes.io/router.tls: "true"
             hosts:
               - authentik.nibblesnbits.org
+            tls:
+              - secretName: authentik-tls-cert
+                hosts:
+                  - authentik.nibblesnbits.org
           
         postgresql:
           enabled: true
           auth:
-            # Tell Postgres to pull the password from your Vault secret
             existingSecret: "authentik-secrets"
-            secretKeys:
-              userPasswordKey: "AUTHENTIK_POSTGRESQL__PASSWORD"
-              adminPasswordKey: "AUTHENTIK_POSTGRESQL__PASSWORD"
+            userPasswordKey: "AUTHENTIK_POSTGRESQL__PASSWORD"
+            adminPasswordKey: "AUTHENTIK_POSTGRESQL__PASSWORD"
+            username: "authentik"
+            database: "authentik"
           primary:
             persistence:
               enabled: true
-              # Match your PVC name if you created one manually, 
-              # or leave commented out to let Helm create it
-              # existingClaim: authentik-pg-volume
+              size: 20Gi
 
   destination:
     server: https://kubernetes.default.svc
