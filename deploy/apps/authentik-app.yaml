@@ -16,6 +16,13 @@ spec:
           enabled: true 
           # You can use a placeholder for the secret_key here 
           # because we override it with the env var below
+          secret_key: "dummy-value-replaced-by-vault"
+          extraEnvVars:
+            - name: AUTHENTIK_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: authentik-vault-auth
+                  key: secret-key # Make sure this matches the key in Vault
 
         # Ensure the sub-charts (Postgres/Redis) also use the secret
         postgresql:
@@ -36,3 +43,44 @@ spec:
 #      prune: true
 #      selfHeal: true
     createNamespace: true
+---
+# 1. THE CONNECTION
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultConnection
+metadata:
+  name: authentik-vault-conn
+  namespace: authentik
+spec:
+  # Using the internal K8s DNS name for Vault
+  address: http://vault-server.vault.svc.cluster.local:8200 
+
+---
+# 3. THE AUTH
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: authentik-vault-auth  # <--- This name must match the Ref below
+  namespace: authentik
+spec:
+  method: kubernetes
+  mount: kubernetes
+  vaultConnectionRef: authentik-vault-conn
+  kubernetes:
+    role: authentik-role
+    serviceAccount: default
+
+---
+# 3. THE SECRET
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: authentik-secrets
+  namespace: authentik
+spec:
+  type: kv-v2
+  mount: secret 
+  path: authentik
+  destination:
+    name: authentik-secrets 
+    create: true
+  vaultAuthRef: authentik-vault-auth # <--- This now points to the correct name
