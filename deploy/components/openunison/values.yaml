@@ -64,11 +64,12 @@ monitoring:
 myvd:
 
 oidc:
-  client_id: "AUTHENTIK_OPENUNISON_CLIENT_ID"
+  client_id: "SeKH5xJcEPMiaUlxynNxxhGU64J5ZsILBmuseFSp"
   client_secret: "AUTHENTIK_OPENUNISON_CLIENT_SECRET"
   issuer: https://authentik.nibblesnbits.org/application/o/openunison
   user_in_idtoken: false
-  domain: ""
+  domain: ""  instance_name: orchestra-login-portal # This name is often part of the path
+
   scopes: openid email profile groups
   claims:
     sub: sub
