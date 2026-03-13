@@ -21,7 +21,7 @@ spec:
             - name: AUTHENTIK_SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: authentik-vault-auth
+                  name: authentik-secrets
                   key: secret-key # Make sure this matches the key in Vault
 
         # Ensure the sub-charts (Postgres/Redis) also use the secret
