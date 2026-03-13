@@ -11,12 +11,12 @@ spec:
     chart: authentik
     helm:
       values: |
-        authentik:
-          # Use your Vault secret for the main app logic
+        global:
           envFrom:
             - secretRef:
-                name: authentik-secrets
-          
+              name: authentik-secrets 
+
+        authentik:
           error_reporting:
             enabled: true
 
