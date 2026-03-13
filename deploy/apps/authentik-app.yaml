@@ -27,13 +27,8 @@ spec:
         # Ensure the sub-charts (Postgres/Redis) also use the secret
         postgresql:
           enabled: true
-          auth:
-            existingSecret: ""
-        
         redis:
           enabled: true
-          auth:
-            existingSecret: ""
   destination:
     server: https://kubernetes.default.svc
     namespace: authentik
