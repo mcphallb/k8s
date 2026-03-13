@@ -12,46 +12,37 @@ spec:
     helm:
       values: |
         authentik:
-          # This one line injects EVERYTHING from your Vault secret
+          # Use your Vault secret for the main app logic
           envFrom:
             - secretRef:
                 name: authentik-secrets
-          postgresql:
-            user: file:///postgres-creds/username
-            password: file:///postgres-creds/password
+          
+          error_reporting:
+            enabled: true
 
-        # Database Server Configuration
-        postgresql:
-          enabled: true
-
-        worker:
-          volumes:
-            - name: postgres-creds
-              secret:
-                secretName: authentik-postgres-credentials
-          volumeMounts:
-            - name: postgres-creds
-              mountPath: /postgres-creds
-              readOnly: true          
-
-        # Traefik Ingress Configuration
         server:
           ingress:
             enabled: true
             ingressClassName: "traefik"
             annotations:
-              traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
               traefik.ingress.kubernetes.io/router.tls: "true"
             hosts:
               - authentik.nibblesnbits.org
-            volumes:
-              - name: postgres-creds
-                secret:
-                  secretName: authentik-postgres-credentials
-            volumeMounts:
-              - name: postgres-creds
-                mountPath: /postgres-creds
-                readOnly: true
+          
+        postgresql:
+          enabled: true
+          auth:
+            # Tell Postgres to pull the password from your Vault secret
+            existingSecret: "authentik-secrets"
+            secretKeys:
+              userPasswordKey: "AUTHENTIK_POSTGRESQL__PASSWORD"
+              adminPasswordKey: "AUTHENTIK_POSTGRESQL__PASSWORD"
+          primary:
+            persistence:
+              enabled: true
+              # Match your PVC name if you created one manually, 
+              # or leave commented out to let Helm create it
+              # existingClaim: authentik-pg-volume
 
   destination:
     server: https://kubernetes.default.svc
@@ -98,23 +89,23 @@ metadata:
 spec:
   type: kv-v2
   mount: secret 
-  path: authentik/secretkey
+  path: nibblesnbits/authentik
   destination:
     name: authentik-secrets 
     create: true
   vaultAuthRef: authentik-vault-auth # <--- This now points to the correct name
 ---
-# 3. THE SECRET
-apiVersion: secrets.hashicorp.com/v1beta1
-kind: VaultStaticSecret
-metadata:
-  name: authentik-postgres-credentials
-  namespace: authentik
-spec:
-  type: kv-v2
-  mount: secret 
-  path: authentik/postgres-credentials
-  destination:
-    name: authentik-postgres-credentials
-    create: true
-  vaultAuthRef: authentik-vault-auth # <--- This now points to the correct name
+## 3. THE SECRET
+#apiVersion: secrets.hashicorp.com/v1beta1
+#kind: VaultStaticSecret
+#metadata:
+#  name: authentik-postgres-credentials
+#  namespace: authentik
+#spec:
+#  type: kv-v2
+#  mount: secret 
+#  path: authentik/postgres-credentials
+#  destination:
+#    name: authentik-postgres-credentials
+#    create: true
+#  vaultAuthRef: authentik-vault-auth # <--- This now points to the correct name
