@@ -11,12 +11,6 @@ spec:
     chart: authentik
     helm:
       values: |
-        env:
-          - name: AUTHENTIK_POSTGRES_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: authentik-secrets
-                key: postgres-password
         authentik:
           # Tell Authentik not to create its own secret
           enabled: true 
