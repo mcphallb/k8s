@@ -33,8 +33,11 @@ metadata:
 spec:
   type: kv-v2
   mount: secret 
-  path: argocd
+  path: argocd/oidc-secret
+  refreshAfter: 60s
   destination:
-    name: argocd-secret 
+    name: argocd-oidc-secret 
     create: true
+    labels:
+      app.kubernetes.io/part-of: argocd
   vaultAuthRef: argocd-vault-auth # <--- This now points to the correct name
