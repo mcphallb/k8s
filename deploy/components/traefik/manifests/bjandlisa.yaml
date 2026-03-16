@@ -2,7 +2,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: bjandlisa-wildcard-cert
-  namespace: traefik
+  namespace: bjandlisa
 spec:
   # This creates a separate secret just for this domain
   secretName: bjandlisa-wildcard-tls 
