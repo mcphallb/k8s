@@ -6,7 +6,7 @@ metadata:
 spec:
   secretName: nibbles-wildcard-tls
   issuerRef:
-    name: cloudflare-issuer
+    name: letsencrypt-cloudflare
     kind: ClusterIssuer
   dnsNames:
     - "nibblesnbits.org"
