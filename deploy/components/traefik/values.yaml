@@ -1,7 +1,15 @@
-volumes:
-  - name: crowdsec-bouncer-key  # Change this to match the secretName
-    mountPath: "/etc/crowdsec-bouncer"
-    type: secret
+deployment:
+  additionalVolumes:
+    - name: bouncer-key
+      secret:
+        secretName: crowdsec-bouncer-key # The actual secret name
+        items:
+          - key: bouncer_key
+            path: bouncer_key
+  additionalVolumeMounts:
+    - name: bouncer-key
+      mountPath: /etc/crowdsec-bouncer
+      readOnly: true
 
 #deployment:
 #  additionalVolumes:
