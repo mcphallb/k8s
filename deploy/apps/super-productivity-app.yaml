@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://gitea.nibblesnbits.org/mcpha1bj/chockablock.git
+    repoURL: https://github.com/mcphallb/k8s.git
     targetRevision: HEAD
     path: deploy/components/super-productivity
   destination:

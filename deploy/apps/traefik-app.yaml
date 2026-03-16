@@ -13,10 +13,10 @@ spec:
       helm:
         valueFiles:
           - $values/deploy/components/traefik/values.yaml
-    - repoURL: https://gitea.nibblesnbits.org/mcpha1bj/chockablock.git
+    - repoURL: https://github.com/mcphallb/k8s.git
       targetRevision: HEAD
       ref: values # Used for the $values variable in the Helm chart above
-    - repoURL: https://gitea.nibblesnbits.org/mcpha1bj/chockablock.git
+    - repoURL: https://github.com/mcphallb/k8s.git
       targetRevision: HEAD
       path: deploy/components/traefik/manifests # WATCH THIS PATH for plain YAMLs
   destination:

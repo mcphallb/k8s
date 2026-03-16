@@ -1,10 +1,11 @@
 # Variables
 TALOS_VERSION  := v1.12.3
+TALOS_SCHEMATIC := 613e1592b2da41ae5e265e8789429f22e121aab91cb4deb6bc3c0b6262961245
 MATCHBOX_IP    := 192.168.30.2
 MATCHBOX_URL   := http://$(MATCHBOX_IP):8080
 
 MB_ASSET_DIR   := ./matchbox/assets
-MB_PROFILE_DIR := ./matchbox/profile
+MB_PROFILE_DIR := ./matchbox/profiles
 MB_GROUP_DIR   := ./matchbox/groups
 
 .PHONY: all clean fetch gen-all up
@@ -18,10 +19,10 @@ fetch:
 	curl -fL "https://boot.ipxe.org/x86_64-pcbios/undionly.kpxe" -o ./tftpboot/undionly.kpxe
 	#curl -L https://github.com/poseidon/matchbox/raw/main/tftp/ipxe.efi -o ./tftpboot/ipxe.efi
 	#curl -L https://github.com/poseidon/matchbox/raw/main/tftp/undionly.kpxe -o ./tftpboot/undionly.kpxe
-	@echo "==> Fetching Talos $(TALOS_VERSION) assets..."
-	mkdir -p ${MB_ASSET_DIR}/talos/$(TALOS_VERSION)
-	curl -L https://github.com/siderolabs/talos/releases/download/$(TALOS_VERSION)/vmlinuz-amd64 -o ${MB_ASSET_DIR}/talos/$(TALOS_VERSION)/vmlinuz
-	curl -L https://github.com/siderolabs/talos/releases/download/$(TALOS_VERSION)/initramfs-amd64.xz -o ${MB_ASSET_DIR}/talos/$(TALOS_VERSION)/initramfs.xz
+	@echo "==> Fetching Talos ${TALOS_VERSION} assets..."
+	mkdir -p ${MB_ASSET_DIR}/talos/${TALOS_VERSION}
+	curl -L https://factory.talos.dev/image/${TALOS_SCHEMATIC}/${TALOS_VERSION}/kernel-amd64 -o ${MB_ASSET_DIR}/talos/${TALOS_VERSION}/vmlinuz
+	curl -L https://factory.talos.dev/image/${TALOS_SCHEMATIC}/${TALOS_VERSION}/initramfs-amd64.xz -o ${MB_ASSET_DIR}/talos/${TALOS_VERSION}/initramfs.xz
 
 # 1. Generate secrets once so they persist
 gen-secrets:
