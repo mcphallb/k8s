@@ -12,7 +12,7 @@ spec:
   tls:
     - hosts:
         - bjandlisa.org
-      secretName: bjadnlisa-wildcard-tls
+      secretName: bjandlisa-wildcard-tls
   rules:
   - host: bjandlisa.org
     http:
