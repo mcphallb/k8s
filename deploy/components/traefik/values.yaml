@@ -85,6 +85,7 @@ persistence:
 service:
   enabled: true
   type: LoadBalancer
+  loadBalancerIP: "192.168.30.202"
   spec:
     externalTrafficPolicy: Local
 
