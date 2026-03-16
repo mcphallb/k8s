@@ -2,6 +2,7 @@ volumes:
   - name: bouncer-key
     mountPath: "/etc/crowdsec-bouncer"
     type: secret
+    secretName: crowdsec-bouncer-key
 
 #deployment:
 #  additionalVolumes:
