@@ -92,8 +92,6 @@ service:
   loadBalancerIP: "192.168.30.200"
   annotations:
     metallb.universe.tf/loadBalancerIPs: "192.168.30.200"
-  spec:
-    externalTrafficPolicy: Local
 
 providers:
   kubernetesIngress:
@@ -103,17 +101,17 @@ providers:
       pathOverride: "traefik/traefik"
 
 extraObjects:
-  - apiVersion: v1
-    kind: Service
-    metadata:
-      name: traefik-internal
-      namespace: traefik # Ensure this matches your Traefik namespace
-    spec:
-      type: LoadBalancer
-      selector:
-        app.kubernetes.io/name: traefik
-        app.kubernetes.io/instance: traefik-release-name # Match your Argo app name
-      ports:
-        - name: websecure
-          port: 443
-          targetPort: internal # Maps to the 'internal' port 9000 we defined above
+#  - apiVersion: v1
+#    kind: Service
+#    metadata:
+#      name: traefik-internal
+#      namespace: traefik # Ensure this matches your Traefik namespace
+#    spec:
+#      type: LoadBalancer
+#      selector:
+#        app.kubernetes.io/name: traefik
+#        app.kubernetes.io/instance: traefik-release-name # Match your Argo app name
+#      ports:
+#        - name: websecure
+#          port: 443
+#          targetPort: internal # Maps to the 'internal' port 9000 we defined above
