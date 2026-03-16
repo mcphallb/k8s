@@ -1,12 +1,11 @@
 deployment:
-  enabled: true
   additionalVolumes:
     - name: bouncer-key
       secret:
-        secretName: crowdsec-bouncer-key # Matches the 'destination.name' above
+        secretName: crowdsec-bouncer-key
         items:
-          - key: bouncer_key   # This is the key inside your Vault secret
-            path: bouncer_key  # This is the filename created on disk
+          - key: bouncer_key
+            path: bouncer_key
   additionalVolumeMounts:
     - name: bouncer-key
       mountPath: /etc/crowdsec-bouncer
