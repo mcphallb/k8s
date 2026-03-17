@@ -45,6 +45,16 @@ spec:
     syncOptions:
       - CreateNamespace=true
 ---
+# 1. THE CONNECTION
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultConnection
+metadata:
+  name: headlamp-vault-conn
+  namespace: headlamp
+spec:
+  # Using the internal K8s DNS name for Vault
+  address: http://vault-server.vault.svc.cluster.local:8200 
+---
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultAuth
 metadata:
@@ -53,8 +63,9 @@ metadata:
 spec:
   method: kubernetes
   mount: kubernetes # The name of your K8s auth mount in Vault
+  vaultConnectionRef: headlamp-vault-conn
   kubernetes:
-    role: vso-role # The role you created in Vault for the operator
+    role: headlamp-role # The role you created in Vault for the operator
     serviceAccount: default
 ---
 apiVersion: secrets.hashicorp.com/v1beta1
