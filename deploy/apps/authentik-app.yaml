@@ -24,6 +24,17 @@ spec:
                   name: authentik-secrets
                   key: AUTHENTIK_POSTGRESQL__PASSWORD
 
+        nfs:
+          server: 192.168.30.3
+          path: /srv/k8s_nfs
+        storageClass:
+          name: nfs-client
+          defaultClass: true
+          reclaimPolicy: Retain  # CRITICAL: Keeps your data if the PVC is deleted
+          archiveOnDelete: true # Renames folders to "archived-xxx" instead of deleting them
+          # THE MAGIC SAUCE:
+          pathPattern: "${.PVC.namespace}/${.PVC.name}"
+
         authentik:
           error_reporting:
             enabled: true
@@ -54,7 +65,7 @@ spec:
             persistence:
               enabled: true
               size: 20Gi
-              existingClaim: "authentik-postgres-data"
+              storageClass: "nfs-client"
 
   destination:
     server: https://kubernetes.default.svc
@@ -106,31 +117,3 @@ spec:
     name: authentik-secrets 
     create: true
   vaultAuthRef: authentik-vault-auth # <--- This now points to the correct name
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: authentik-postgres-pv-static
-spec:
-  capacity:
-    storage: 20Gi
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: "" # Leave empty to bind to a specific PVC
-  nfs:
-    server: 192.168.30.3
-    path: "/srv/k8s_nfs"
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: data-authentik-postgresql-0
-  namespace: authentik
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 20Gi
-  volumeName: authentik-postgres-pv-static # This locks it to your data
