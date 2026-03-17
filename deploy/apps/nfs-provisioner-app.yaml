@@ -18,6 +18,8 @@ spec:
           name: nfs-client
           defaultClass: true
           reclaimPolicy: Retain # Keeps data on NFS even if PVC is deleted
+          archiveOnDelete: true
+          pathPattern: "${.PVC.namespace}/${.PVC.name}"
   destination:
     server: https://kubernetes.default.svc
     namespace: storage
