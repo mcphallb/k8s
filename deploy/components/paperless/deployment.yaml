@@ -61,9 +61,6 @@ spec:
               mountPath: /usr/src/paperless/media
             - name: consume
               mountPath: /usr/src/paperless/consume
-            - name: import-data
-              mountPath: /usr/src/paperless/import
-              readOnly: true
 
         # --- COMPONENT 2: The FTP Hack Sidecar ---
         - name: ftp-server
