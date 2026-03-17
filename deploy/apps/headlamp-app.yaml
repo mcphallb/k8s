@@ -14,8 +14,8 @@ spec:
         config:
           metricsEnabled: true
           oidc:
-            clientID: "elaXahqcEhGoJwoz342ateZKnEwdxq5uB0nLoGYm"
-            issuerUrl: "https://authentik.nibblesnbits.org/application/o/headlamp/"
+            clientID: "mMQYRhbdWUFAQB3JxJq0J73civxcbmcFFd1kWuD2"
+            idpIssuerURL: "https://authentik.nibblesnbits.org/application/o/headlamp/"
             scopes: "openid,profile,email,groups"
             # VSO will create this secret in the 'headlamp' namespace
             clientSecretSecretName: "headlamp-oidc-secret"
