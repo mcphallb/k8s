@@ -59,7 +59,7 @@ spec:
             existingSecret: "authentik-secrets"
             secretKeys:
               userPasswordKey: "AUTHENTIK_POSTGRESQL__PASSWORD"
-              adminPasswokubectl get pv -o jsonpath='{.items[*].spec.nfs.path}'rdKey: "AUTHENTIK_POSTGRESQL__PASSWORD"
+              adminPasswordKey: "AUTHENTIK_POSTGRESQL__PASSWORD"
             usePasswordFiles: false
           primary:
             persistence:
