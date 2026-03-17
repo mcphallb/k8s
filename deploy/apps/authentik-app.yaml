@@ -119,8 +119,8 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: "" # Leave empty to bind to a specific PVC
   nfs:
-    server: <YOUR_NFS_IP>
-    path: "/your/nfs/path/to/REAL_DATA_FOLDER"
+    server: 192.168.30.3
+    path: "/srv/k8s_nfs"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
