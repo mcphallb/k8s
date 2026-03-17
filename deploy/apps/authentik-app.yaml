@@ -125,7 +125,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: authentik-postgres-data
+  name: data-authentik-postgresql-0
   namespace: authentik
 spec:
   accessModes:
