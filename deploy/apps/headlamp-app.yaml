@@ -8,22 +8,32 @@ spec:
   source:
     repoURL: 'https://kubernetes-sigs.github.io/headlamp/'
     chart: headlamp
-    targetRevision: 0.40.0
+    targetRevision: 0.40.1
     helm:
       values: |
         config:
-          # Enabling the metrics you wanted
           metricsEnabled: true
-          # We'll skip the OTel collector for now unless you have one running
+          oidc:
+            clientID: "elaXahqcEhGoJwoz342ateZKnEwdxq5uB0nLoGYm"
+            issuerUrl: "https://authentik.nibblesnbits.org/application/o/headlamp/"
+            scopes: "openid,profile,email,groups"
+            # VSO will create this secret in the 'headlamp' namespace
+            clientSecretSecretName: "headlamp-oidc-secret"
+            clientSecretKeyName: "oidc-client-secret"
         service:
-          type: LoadBalancer
+          type: ClusterIP
           port: 80
+        ingress:
+          enabled: true
           annotations:
-            external-dns.alpha.kubernetes.io/hostname: headlamp.chockablock.home
-        # This aligns with the ServiceAccount in your example
-        serviceAccount:
-          create: true
-          name: headlamp-admin
+            kubernetes.io/ingress.class: traefik
+            traefik.ingress.kubernetes.io/router.entrypoints: websecure
+            traefik.ingress.kubernetes.io/router.tls: "true"
+          hosts:
+            - host: headlamp.nibblesnbits.org
+              paths:
+                - path: /
+                  type: ImplementationSpecific
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: headlamp
@@ -33,3 +43,30 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: headlamp-vault-secret
+  namespace: headlamp
+spec:
+  mount: secret # Adjust if your mount point is different (e.g., 'secret')
+  type: kv-v2
+  path: headlamp # Path in Vault (e.g., kv/headlamp)
+  refreshAfter: 1h
+  destination:
+    name: headlamp-oidc-secret
+    create: true
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: headlamp-oidc-admin-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: User
+  name: mcpha1bj # Ensure this matches the 'Username' shown in your ArgoCD test
+  apiGroup: rbac.authorization.k8s.io
