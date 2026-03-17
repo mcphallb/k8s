@@ -107,17 +107,30 @@ spec:
     create: true
   vaultAuthRef: authentik-vault-auth # <--- This now points to the correct name
 ---
-## 3. THE SECRET
-#apiVersion: secrets.hashicorp.com/v1beta1
-#kind: VaultStaticSecret
-#metadata:
-#  name: authentik-postgres-credentials
-#  namespace: authentik
-#spec:
-#  type: kv-v2
-#  mount: secret 
-#  path: authentik/postgres-credentials
-#  destination:
-#    name: authentik-postgres-credentials
-#    create: true
-#  vaultAuthRef: authentik-vault-auth # <--- This now points to the correct name
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: authentik-postgres-pv-static
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: "" # Leave empty to bind to a specific PVC
+  nfs:
+    server: <YOUR_NFS_IP>
+    path: "/your/nfs/path/to/REAL_DATA_FOLDER"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: authentik-postgres-data
+  namespace: authentik
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+  volumeName: authentik-postgres-pv-static # This locks it to your data
