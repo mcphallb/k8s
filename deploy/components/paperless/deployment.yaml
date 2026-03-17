@@ -104,6 +104,3 @@ spec:
         - name: consume
           persistentVolumeClaim:
             claimName: paperless-consume
-        - name: import-data
-          persistentVolumeClaim:
-            claimName: paperless-import-pvc
