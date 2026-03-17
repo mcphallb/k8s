@@ -45,38 +45,41 @@ spec:
     syncOptions:
       - CreateNamespace=true
 ---
-# 1. THE CONNECTION
+# 1. THE CONNECTION (Unchanged)
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultConnection
 metadata:
   name: headlamp-vault-conn
   namespace: headlamp
 spec:
-  # Using the internal K8s DNS name for Vault
   address: http://vault-server.vault.svc.cluster.local:8200 
 ---
+# 2. THE AUTH (Added vaultConnectionRef)
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultAuth
 metadata:
-  name: default # This matches what the StaticSecret is looking for
+  name: headlamp-vault-auth # Give it a specific name
   namespace: headlamp
 spec:
   method: kubernetes
-  mount: kubernetes # The name of your K8s auth mount in Vault
-  vaultConnectionRef: headlamp-vault-conn
+  mount: kubernetes
+  vaultConnectionRef: headlamp-vault-conn # MUST match name above
   kubernetes:
-    role: headlamp-role # The role you created in Vault for the operator
+    role: headlamp-role # Ensure this role exists in Vault!
     serviceAccount: default
 ---
+# 3. THE SECRET (Added vaultAuthRef)
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultStaticSecret
 metadata:
   name: headlamp-vault-secret
   namespace: headlamp
 spec:
-  mount: secret # Adjust if your mount point is different (e.g., 'secret')
+  # This links the secret to the auth method above
+  vaultAuthRef: headlamp-vault-auth 
+  mount: secret 
   type: kv-v2
-  path: headlamp # Path in Vault (e.g., kv/headlamp)
+  path: headlamp 
   refreshAfter: 1h
   destination:
     name: headlamp-oidc-secret
